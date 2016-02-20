@@ -1,5 +1,6 @@
 var webpack = require('webpack')
 var path = require('path')
+var LessPluginNpmImport = require('less-plugin-npm-import')
 
 var config = {
   devtool: 'eval',
@@ -21,6 +22,7 @@ var config = {
       exclude: /node_modules/,
       query: {
         'presets': ['react', 'es2015'],
+        'plugins': ['transform-object-rest-spread'],
         'env': {
           'development': {
             'plugins': [['react-transform', {
@@ -37,6 +39,9 @@ var config = {
       test: /\.less$/,
       loader: 'style!css!less'
     }]
+  },
+  lessLoader: {
+    lessPlugins: [new LessPluginNpmImport()]
   },
   resolve: {
     extensions: ['', '.jsx', '.js', '.json', '.less']
