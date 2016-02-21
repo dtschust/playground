@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/dtschust/playground#readme",
   "dependencies": {
+    "@nerdwallet/greg-slider": "^1.0.2",
     "@nerdwallet/react-button": "^3.0.0",
     "@nerdwallet/react-input": "^3.0.0",
     "babel": "^6.3.26",

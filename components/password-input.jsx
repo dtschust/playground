@@ -1,9 +1,10 @@
 import React from 'react'
-import UncontrolledValidatedInput from './uncontrolled-validated-input'
+import InputValidator from './input-validator'
+import Input from '@nerdwallet/react-input'
 import classnames from 'classnames'
 
-var UncontrolledPasswordInput = React.createClass({
-  displayName: 'Uncontrolled Password Input',
+var PasswordInput = React.createClass({
+  displayName: 'Password Input',
   propTypes: {
     showPasswordRequirements: React.PropTypes.bool
   },
@@ -47,15 +48,15 @@ var UncontrolledPasswordInput = React.createClass({
 
   // public interface
   isValid: function () {
-    return this.refs.input.isValid()
+    return this.refs.validator.isValid()
   },
 
   getValue: function () {
-    return this.refs.input.getValue()
+    return this.refs.validator.getValue()
   },
 
   getValidation: function () {
-    return this.refs.input.getValidation()
+    return this.refs.validator.getValidation()
   },
   // end public interface
 
@@ -81,11 +82,13 @@ var UncontrolledPasswordInput = React.createClass({
     delete props.showPasswordRequirements
     return (
       <div>
-        <UncontrolledValidatedInput ref='input' validate={this.validate} {...this.props} displayValidation={false}/>
+        <InputValidator ref='validator' validate={this.validate} displayValidation={false}>
+          <Input {...props}/>
+        </InputValidator>
         {this.props.showPasswordRequirements ? this.renderPasswordRequirements() : null}
       </div>
     )
   }
 })
 
-module.exports = UncontrolledPasswordInput
+module.exports = PasswordInput

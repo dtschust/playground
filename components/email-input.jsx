@@ -1,9 +1,10 @@
 import React from 'react'
-import UncontrolledValidatedInput from './uncontrolled-validated-input'
+import InputValidator from './input-validator'
+import Input from '@nerdwallet/react-input'
 import { isEmail } from 'validator'
 
-var UncontrolledEmailInput = React.createClass({
-  displayName: 'Uncontrolled Email Input',
+var EmailInput = React.createClass({
+  displayName: 'Email Input',
   propTypes: {
   },
 
@@ -23,23 +24,25 @@ var UncontrolledEmailInput = React.createClass({
 
   // public interface
   isValid: function () {
-    return this.refs.input.isValid()
+    return this.refs.validator.isValid()
   },
 
   getValue: function () {
-    return this.refs.input.getValue()
+    return this.refs.validator.getValue()
   },
 
   getValidation: function () {
-    return this.refs.input.getValidation()
+    return this.refs.validator.getValidation()
   },
   // end public interface
 
   render: function () {
     return (
-      <UncontrolledValidatedInput ref='input' validate={this.validate} {...this.props}/>
+      <InputValidator ref='validator' validate={this.validate}>
+        <Input {...this.props}/>
+      </InputValidator>
     )
   }
 })
 
-module.exports = UncontrolledEmailInput
+module.exports = EmailInput
