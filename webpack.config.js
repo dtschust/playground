@@ -5,14 +5,16 @@ var LessPluginNpmImport = require('less-plugin-npm-import')
 var config = {
   devtool: 'eval',
   entry: [
+    'webpack-hot-middleware/client',
     path.join(__dirname, '/index.jsx')
   ],
   output: {
     path: path.join(__dirname, '/public'),
     filename: 'bundle.js',
-    publicPath: '/'
+    publicPath: '/public'
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   ],
   module: {

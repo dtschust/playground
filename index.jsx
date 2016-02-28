@@ -1,107 +1,73 @@
+/* global io */
 import React from 'react'
 import ReactDOM from 'react-dom'
-import classnames from 'classnames'
-import { PrimaryButton } from '@nerdwallet/react-button'
-import Slider from '@nerdwallet/greg-slider'
-import EmailInput from './components/email-input'
-import PasswordInput from './components/password-input'
-import InputValidator from './components/input-validator'
-import Input from '@nerdwallet/react-input'
+import { Provider, connect } from 'react-redux'
+import { fetchBugs, receiveBugs } from './redux/actions.js'
+import configureStore from './redux/configureStore'
 
 require('./styles/index.less')
 
-const areInputsValid = (inputs) => {
-  var allValid = true
-  inputs.forEach((input) => {
-    var isValid = input.isValid()
-    if (!isValid) {
-      allValid = false
-    }
-  })
-  return allValid
-}
-
-var Index = React.createClass({
+var Index = connect(store => store)(React.createClass({
   displayName: 'Index',
 
-  register: function (e) {
-    e.preventDefault()
-    const { email, password, firstName, lastName, sliderValue } = this.refs
-    var inputs = [email, password, firstName, lastName, sliderValue]
-    if (!areInputsValid(inputs)) {
-      console.log('invalid inputs, not registering')
-      return
-    }
-    var registrationData = inputs.map((input) => input.getValue())
-    console.log('registering:', ...registrationData)
+  propTypes: {
+    dispatch: React.PropTypes.func.isRequired,
+    bugs: React.PropTypes.object.isRequired
   },
 
-  getInitialState: function () {
-    return {
-      sliderValue: 0
-    }
+  renderBugRow: function (bug) {
+    var { name, description, complete, screenshotURL, consoleErrors } = bug
+    return (
+      <tr>
+        <td>{complete ? 'Complete' : 'Not Complete'}</td>
+        <td>{name}</td>
+        <td>{description}</td>
+        <td>{screenshotURL}</td>
+        <td>{consoleErrors}</td>
+      </tr>
+    )
   },
 
-  handleSliderValueChange: function (e) {
-    var sliderValue = parseFloat(e.target ? e.target.value : e)
-    if (this.state.sliderValue !== sliderValue) {
-      this.setState({sliderValue})
-    }
-  },
-
-  lessThanFifty: function (value) {
-    var validation = {
-      isValid: true,
-      errors: [],
-      feedback: []
-    }
-    if (value < 50) {
-      validation.isValid = false
-      validation.errors = ['required-field']
-      validation.feedback = ['Value must be less than fifty']
-    }
-    return validation
-  },
-
-  validateName: function (feedbackMsg) {
-    return function (value) {
-      var validation = {
-        isValid: true,
-        errors: [],
-        feedback: []
-      }
-      if (value.length <= 0) {
-        validation.isValid = false
-        validation.errors = ['required-field']
-        validation.feedback = [feedbackMsg]
-      }
-      return validation
-    }
+  componentDidMount: function () {
+    this.props.dispatch(fetchBugs())
+    var socket = io()
+    socket.on('bugUpdate', (bugs) => {
+      this.props.dispatch(receiveBugs(bugs))
+    })
   },
 
   render: function () {
+    var { bugs } = this.props
+    var rows = []
+    Object.keys(bugs).forEach((bugId) => {
+      rows.push(this.renderBugRow(bugs[bugId]))
+    })
     return (
-      <div style={{width: '300px', margin: '30px auto'}} className={classnames('container')}>
-        <form onSubmit={this.register}>
-          <InputValidator ref='firstName' validate={this.validateName('First Name required')}>
-            <Input placeholder='First Name'/>
-          </InputValidator>
-          <InputValidator ref='lastName' validate={this.validateName('Last Name required')}>
-            <Input placeholder='Last Name'/>
-          </InputValidator>
-          <EmailInput placeholder='Email Address' ref='email'/>
-          <PasswordInput placeholder='Password' ref='password' type='password'/>
-          <PrimaryButton type='submit'>Submit</PrimaryButton>
-        </form>
-        <div style={{marginTop: '20px'}}>
-          <Slider value={this.state.sliderValue} min={0} max={100} onChange={this.handleSliderValueChange}/>
-          <InputValidator ref='sliderValue' validate={this.lessThanFifty}>
-            <Input value={this.state.sliderValue} onChange={this.handleSliderValueChange}/>
-          </InputValidator>
-        </div>
+      <div>
+        <h1>Hello World</h1>
+        <table>
+          <thead>
+            <tr>
+              <th>Complete</th>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Screenshot</th>
+              <th>Errors</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows}
+          </tbody>
+        </table>
       </div>
     )
   }
-})
+}))
 
-ReactDOM.render(<Index/>, document.getElementById('root'))
+var store = configureStore()
+
+ReactDOM.render((
+  <Provider store={store}>
+    <Index/>
+  </Provider>
+), document.getElementById('root'))
