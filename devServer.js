@@ -24,9 +24,7 @@ app.use(require('webpack-dev-middleware')(compiler, {
 
 app.use(require('webpack-hot-middleware')(compiler))
 
-app.use(bodyParser.urlencoded({
-  extended: true
-}))
+app.use(bodyParser.json())
 
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html')
@@ -50,7 +48,7 @@ router.route('/bugs').get(function (req, res) {
     }
     io.emit('bugUpdate', [newBug])
 
-    res.send({ message: 'Bug Added' })
+    res.json([newBug])
   })
 })
 

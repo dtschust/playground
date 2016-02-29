@@ -43,8 +43,21 @@ export const updateBug = function (bug) {
 //   }
 // }
 //
-// export const createBug = function (bug) {
-//   return dispatch => {
-//
-//   }
-// }
+export const createBug = function (bug) {
+  return dispatch => {
+    fetch('/api/bugs', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(bug)
+    }).then(function (response) {
+      return response.json()
+    }).then(function (json) {
+      dispatch(receiveBugs(json))
+    }).catch(function (error) {
+      console.log('json parsing failed', error)
+    })
+  }
+}

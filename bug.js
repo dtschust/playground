@@ -1,14 +1,19 @@
 import mongoose from 'mongoose'
 
 const bugSchema = new mongoose.Schema({
-  name: String,
+  status: { type: String, enum: ['Not Done', 'Done', 'Code Review', 'Deployed'], default: 'Not Done' },
   description: String,
-  complete: { type: Boolean, default: false },
+  priority: { type: String, enum: ['Low', 'Medium', 'High', 'Highest'], default: 'Low' },
+  owner: { type: String, default: 'Unassigned' },
+  reporter: String,
   screenshotURL: String,
   consoleErrors: [{
     errorMsg: String,
     stack: String
-  }]
+  }],
+  state: Object,
+  actions: [Object],
+  notes: String
 })
 
 var Bug = mongoose.model('Bug', bugSchema)
