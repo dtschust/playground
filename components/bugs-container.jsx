@@ -1,49 +1,69 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { fetchBugs, createBug } from '../redux/actions.js'
+// import { fetchBugs, createBug } from '../redux/actions.js'
+import Bug from './bug'
 
-const BugsContainer = connect(({bugs}) => ({ bugs }))(React.createClass({
+const BugsContainer = connect((store) => store)(React.createClass({
   displayName: 'Bugs Container',
 
   propTypes: {
     dispatch: React.PropTypes.func.isRequired,
-    bugs: React.PropTypes.object.isRequired
+    bugs: React.PropTypes.object.isRequired,
+    rtUpdates: React.PropTypes.object,
+    people: React.PropTypes.array
   },
 
-  renderBugRow: function (bug) {
-    var { _id, status, description, priority, owner, reporter, screenshotURL, consoleErrors, state, actions, notes } = bug
-    return (
-      <tr key={_id} className='bugs-table-row'>
-        <td className='bugs-table-cell'>{status}</td>
-        <td className='bugs-table-cell'>{owner}</td>
-        <td className='bugs-table-cell'>{priority}</td>
-        <td className='bugs-table-cell'>{description}</td>
-        <td className='bugs-table-cell'>{reporter}</td>
-        <td className='bugs-table-cell'>{screenshotURL}</td>
-        <td className='bugs-table-cell'>{consoleErrors}</td>
-        <td className='bugs-table-cell'>{actions}</td>
-        <td className='bugs-table-cell'>{state}</td>
-        <td className='bugs-table-cell'>Links</td>
-        <td className='bugs-table-cell'>{notes}</td>
-      </tr>
-    )
-  },
+  // renderBugRow: function (bug) {
+  //   var { _id, status, description, priority, owner, reporter, screenshotURL, consoleErrors, state, actions, notes } = bug
+  //   return (
+  //     <tr key={_id} className='bugs-table-row'>
+  //       <td className='bugs-table-cell'>{status}</td>
+  //       <td className='bugs-table-cell'>{owner}</td>
+  //       <td className='bugs-table-cell'>{priority}</td>
+  //       <td className='bugs-table-cell'>{description}</td>
+  //       <td className='bugs-table-cell'>{reporter}</td>
+  //       <td className='bugs-table-cell'>{screenshotURL}</td>
+  //       <td className='bugs-table-cell'>{consoleErrors}</td>
+  //       <td className='bugs-table-cell'>{actions}</td>
+  //       <td className='bugs-table-cell'>{state}</td>
+  //       <td className='bugs-table-cell'>Links</td>
+  //       <td className='bugs-table-cell'>{notes}</td>
+  //     </tr>
+  //   )
+  // },
 
   componentDidMount: function () {
-    this.props.dispatch(fetchBugs())
+    // this.props.dispatch(fetchBugs())
   },
 
   createBug: function (e) {
-    e.preventDefault()
-    var inputs = ['description', 'priority', 'reporter', 'screenshotURL', 'notes']
-    var bug = inputs.reduce((prev, curr) => {
-      prev[curr] = this.refs[curr].value
-      return prev
-    }, {})
-    this.props.dispatch(createBug(bug))
+    // e.preventDefault()
+    // var inputs = ['description', 'priority', 'reporter', 'screenshotURL', 'notes']
+    // var bug = inputs.reduce((prev, curr) => {
+    //   prev[curr] = this.refs[curr].value
+    //   return prev
+    // }, {})
+    // this.props.dispatch(createBug(bug))
   },
 
   render: function () {
+    var { bugs: bugObjects, people, rtUpdates } = this.props
+    var bugs = []
+    Object.keys(bugObjects).forEach((bugId) => {
+      bugs.push(bugObjects[bugId])
+    })
+    var rows = bugs.map((bug) => {
+      var id = bug['_id']
+      return (<Bug bug={bug} rtUpdates={rtUpdates[id]} people={people}/>)
+    })
+    return (
+      <div>
+        { rows }
+      </div>
+    )
+  },
+
+  renderzz: function () {
     var { bugs } = this.props
     var rows = []
     Object.keys(bugs).forEach((bugId) => {

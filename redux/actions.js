@@ -4,6 +4,8 @@ import 'whatwg-fetch'
 
 export const receiveBugs = createAction('receive any amount of bugs')
 
+export const localUpdateBug = createAction('Update the state of a bug')
+
 export const fetchBugs = function () {
   return dispatch => {
     fetch('/api/bugs')
