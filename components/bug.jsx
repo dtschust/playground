@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
 const EditableField = ({rtUpdates, children, people}) => {
   var classes = rtUpdates ? 'editable-field new' : 'editable-field'
@@ -36,7 +37,7 @@ const Bug = React.createClass({
           Priority:
           <select value={priority}>
             {priorityOptions.map((priorityOption) => {
-              return (<option value={priorityOption}>{priorityOption}</option>)
+              return (<option key={priorityOption} value={priorityOption}>{priorityOption}</option>)
             })}
           </select>
         </EditableField>
@@ -48,4 +49,11 @@ const Bug = React.createClass({
   }
 })
 
-export default Bug
+const mapStateToProps = function ({bugs, rtUpdates, people}, {id}) {
+  return {
+    bug: bugs[id],
+    rtUpdates: rtUpdates[id],
+    people
+  }
+}
+export default connect(mapStateToProps)(Bug)

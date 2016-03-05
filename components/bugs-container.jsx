@@ -10,7 +10,7 @@ const BugsContainer = connect((store) => store)(React.createClass({
     dispatch: React.PropTypes.func.isRequired,
     bugs: React.PropTypes.object.isRequired,
     rtUpdates: React.PropTypes.object,
-    people: React.PropTypes.array
+    people: React.PropTypes.object
   },
 
   // renderBugRow: function (bug) {
@@ -47,15 +47,17 @@ const BugsContainer = connect((store) => store)(React.createClass({
   },
 
   render: function () {
-    var { bugs: bugObjects, people, rtUpdates } = this.props
-    var bugs = []
-    Object.keys(bugObjects).forEach((bugId) => {
-      bugs.push(bugObjects[bugId])
+    // var { bugs: bugObjects, people, rtUpdates } = this.props
+    // var bugs = []
+    // Object.keys(bugObjects).forEach((bugId) => {
+    //   bugs.push(bugObjects[bugId])
+    // })
+    var bugIds = Object.keys(this.props.bugs)
+    var rows = bugIds.map((bugId) => {
+      // var id = bug['_id']
+      return (<Bug key={bugId} id={bugId} />)
     })
-    var rows = bugs.map((bug) => {
-      var id = bug['_id']
-      return (<Bug bug={bug} rtUpdates={rtUpdates[id]} people={people}/>)
-    })
+    /* bug={bug} rtUpdates={rtUpdates[id]} people={people} */
     return (
       <div>
         { rows }
