@@ -15,6 +15,12 @@ var router = express.Router()
 // })
 
 var app = express()
+var exphbs = require('express-handlebars');
+app.engine('.hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}));
+app.set('view engine', '.hbs');
+
+
+
 var compiler = webpack(config)
 
 app.use(require('webpack-dev-middleware')(compiler, {
@@ -26,8 +32,12 @@ app.use(require('webpack-hot-middleware')(compiler))
 
 app.use(bodyParser.json())
 
-app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/index.html')
+app.get('/:projectName/:id?', function (req, res) {
+  res.render('index', {
+    ProjectName: req.params.projectName,
+    bugId: req.params.id
+  })
+  // res.sendFile(__dirname + '/index.html')
 })
 
 // router.route('/bugs').get(function (req, res) {

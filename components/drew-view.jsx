@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import Bug from './bug'
 import People from './people'
 
-const DrewView = connect(({bugs, people}) => ({bugs, people}))(React.createClass({
+const DrewView = React.createClass({
   displayName: 'Drew View',
 
   propTypes: {
@@ -48,6 +48,6 @@ const DrewView = connect(({bugs, people}) => ({bugs, people}))(React.createClass
 
     )
   }
-}))
+})
 
-export default DrewView
+export default connect(({bugs, people}) => ({bugs, people}))(DrewView)

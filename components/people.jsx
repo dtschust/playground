@@ -7,7 +7,7 @@ const People = ({people}) => {
       {
         names.map((person) => {
           return (
-            <span className='person' style={{color: people[person]}}>
+            <span key={person} className='person' style={{color: people[person]}}>
               {person}
             </span>
           )
