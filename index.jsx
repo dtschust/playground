@@ -20,6 +20,7 @@ while (!person) {
   window.localStorage.setItem('person', person)
 }
 store.dispatch(identify(person))
+
 // Person randomly updating bugs
 // setInterval(function updateBugs () {
 //   if (window.stopUpdates) {
