@@ -6,6 +6,9 @@
     {{#if bugId}}
     <script>window.bugId={{{bugId}}}</script>
     {{/if}}
+    {{#if ip}}
+    <script>window.clientIp={{{ip}}}</script>
+    {{/if}}
   </head>
   <body>
     <h1>{{{ProjectName}}} {{{bugId}}}</h1>

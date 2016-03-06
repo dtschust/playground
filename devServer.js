@@ -19,7 +19,8 @@ var exphbs = require('express-handlebars');
 app.engine('.hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}));
 app.set('view engine', '.hbs');
 
-
+// let us get the ip of the request
+app.enable('trust proxy')
 
 var compiler = webpack(config)
 
@@ -33,11 +34,12 @@ app.use(require('webpack-hot-middleware')(compiler))
 app.use(bodyParser.json())
 
 app.get('/:projectName/:id?', function (req, res) {
+  console.log('oh hello', req.ip)
   res.render('index', {
-    ProjectName: req.params.projectName,
-    bugId: req.params.id
+    ProjectName: req.params.projectName.toLowerCase(),
+    bugId: req.params.id,
+    ip: req.ip // not sure if this works yet
   })
-  // res.sendFile(__dirname + '/index.html')
 })
 
 // router.route('/bugs').get(function (req, res) {
