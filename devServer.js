@@ -36,44 +36,44 @@ app.use(bodyParser.json())
 app.get('/:projectName/:id?', function (req, res) {
   console.log('oh hello', req.ip)
   res.render('index', {
-    ProjectName: req.params.projectName.toLowerCase(),
+    projectName: req.params.projectName.toLowerCase(),
     bugId: req.params.id,
     ip: req.ip // not sure if this works yet
   })
 })
 
-// router.route('/bugs').get(function (req, res) {
-//   Bug.find(function (err, bugs) {
-//     if (err) {
-//       res.status(500)
-//       return res.send(err)
-//     }
-//
-//     res.json(bugs)
-//   })
-// }).post(function (req, res) {
-//   var bug = new Bug(req.body)
-//   bug.save(function (err, newBug) {
-//     if (err) {
-//       res.status(500)
-//       return res.send(err)
-//     }
-//     io.emit('bugUpdate', [newBug])
-//
-//     res.json([newBug])
-//   })
-// })
-//
-// router.route('/bugs/:id').put(function (req, res) {
-//   Bug.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, updatedBug) {
-//     if (err) {
-//       res.status(500)
-//       return res.send(err)
-//     }
-//     io.emit('bugUpdate', [updatedBug])
-//     return res.json(updatedBug)
-//   })
-// })
+router.route('/bugs').get(function (req, res) {
+  Bug.find(function (err, bugs) {
+    if (err) {
+      res.status(500)
+      return res.send(err)
+    }
+
+    res.json(bugs)
+  })
+}).post(function (req, res) {
+  var bug = new Bug(req.body)
+  bug.save(function (err, newBug) {
+    if (err) {
+      res.status(500)
+      return res.send(err)
+    }
+    io.emit('bugUpdate', [newBug])
+
+    res.json([newBug])
+  })
+})
+
+router.route('/bugs/:id').put(function (req, res) {
+  Bug.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, updatedBug) {
+    if (err) {
+      res.status(500)
+      return res.send(err)
+    }
+    io.emit('bugUpdate', [updatedBug])
+    return res.json(updatedBug)
+  })
+})
 
 app.use('/api', router)
 app.set('port', 3005)

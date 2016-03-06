@@ -9,9 +9,12 @@
     {{#if ip}}
     <script>window.clientIp='{{{ip}}}'</script>
     {{/if}}
+    {{#if projectName}}
+    <script>window.projectName='{{{projectName}}}'</script>
+    {{/if}}
   </head>
   <body>
-    <h1>{{{ProjectName}}} {{{bugId}}}</h1>
+    <h1>{{{projectName}}} {{{bugId}}}</h1>
     <div id="root"></div>
     <script src="/public/bundle.js"></script>
   </body>

@@ -5,6 +5,7 @@ import Bug from './bug'
 import People from './people'
 import Filters from './filters'
 import Sort from './sort'
+import BugCreator from './bug-creator'
 import _ from 'lodash'
 
 const DrewView = React.createClass({
@@ -19,21 +20,9 @@ const DrewView = React.createClass({
     // this.props.dispatch(fetchBugs())
   },
 
-  createBug: function (e) {
-    // e.preventDefault()
-    // var inputs = ['description', 'priority', 'reporter', 'screenshotURL', 'notes']
-    // var bug = inputs.reduce((prev, curr) => {
-    //   prev[curr] = this.refs[curr].value
-    //   return prev
-    // }, {})
-    // this.props.dispatch(createBug(bug))
-  },
-
   render: function () {
     var {bugIds} = this.props
 
-    // sortby component
-    // bug creator
     return (
       <div>
         <People/>
@@ -46,6 +35,7 @@ const DrewView = React.createClass({
             })
           }
         </div>
+        <BugCreator dispatch={this.props.dispatch}/>
       </div>
 
     )

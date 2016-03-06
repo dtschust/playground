@@ -51,7 +51,7 @@ export const updateBug = function (bug) {
 //
 export const createBug = function (bug) {
   return dispatch => {
-    fetch('/api/bugs', {
+    return fetch('/api/bugs', {
       method: 'post',
       headers: {
         'Accept': 'application/json',

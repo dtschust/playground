@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import {priority as priorityEnum} from '../bug-enums'
 
 const EditableField = ({rtUpdates, children, people}) => {
   var classes = rtUpdates ? 'editable-field new' : 'editable-field'
@@ -21,15 +22,17 @@ const Bug = React.createClass({
   propTypes: {
     bug: React.PropTypes.object.isRequired,
     rtUpdates: React.PropTypes.object,
+    sortKey: React.PropTypes.string,
     people: React.PropTypes.object
   },
 
   render: function () {
     var rtUpdates = this.props.rtUpdates || {}
-    var { _id, description, priority, owner, reporter, status } = this.props.bug
-    var priorityOptions = ['Low', 'Medium', 'High', 'Highest']
+    var { description, priority, owner, reporter, status } = this.props.bug
+    var priorityOptions = priorityEnum.enum
     return (
-      <div style={{margin: '20px', padding: '10px', backgroundColor: 'grey', textAlign: 'center'}}className='bug' data-bug-id={_id}>
+      <div style={{margin: '20px', padding: '10px', backgroundColor: 'grey', textAlign: 'center'}}
+        className='bug'>
         <EditableField rtUpdates={rtUpdates.owner} people={this.props.people}>
           <div>Owner: {owner}</div>
         </EditableField>
@@ -55,10 +58,11 @@ const Bug = React.createClass({
   }
 })
 
-const mapStateToProps = function ({bugs, rtUpdates, people}, {id}) {
+const mapStateToProps = function ({bugs, rtUpdates, people, sort}, {id}) {
   return {
     bug: bugs[id],
     rtUpdates: rtUpdates[id],
+    sortKey: sort.sortKey,
     people
   }
 }
