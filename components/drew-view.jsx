@@ -3,13 +3,15 @@ import { connect } from 'react-redux'
 // import { fetchBugs, createBug } from '../redux/actions.js'
 import Bug from './bug'
 import People from './people'
+import Filters from './filters'
+import _ from 'lodash'
 
 const DrewView = React.createClass({
   displayName: 'Drew View',
 
   propTypes: {
     dispatch: React.PropTypes.func.isRequired,
-    bugs: React.PropTypes.object.isRequired
+    bugIds: React.PropTypes.array.isRequired
   },
 
   componentDidMount: function () {
@@ -27,7 +29,7 @@ const DrewView = React.createClass({
   },
 
   render: function () {
-    var bugIds = Object.keys(this.props.bugs)
+    var {bugIds} = this.props
 
     // people component
     // sortby component
@@ -37,6 +39,7 @@ const DrewView = React.createClass({
     return (
       <div>
         <People/>
+        <Filters/>
         <div className='bugs-container'>
           {
             bugIds.map((bugId) => {
@@ -50,4 +53,23 @@ const DrewView = React.createClass({
   }
 })
 
-export default connect(({bugs, people}) => ({bugs, people}))(DrewView)
+const mapStateToProps = function ({bugs, filters}) {
+  var filteredBugs = _.toArray(bugs)
+  var filterNames = Object.keys(filters)
+  filterNames.forEach((filter) => {
+    if (!filters[filter]) {
+      return
+    }
+    filteredBugs = filteredBugs.filter((bug) => {
+      var bugVal = bug[filter].toString().toLowerCase()
+      var filterVal = filters[filter].toString().toLowerCase()
+      return (bugVal.indexOf(filterVal) >= 0)
+    })
+  })
+  return {
+    bugIds: _.map(filteredBugs, '_id'),
+    filters
+  }
+}
+
+export default connect(mapStateToProps)(DrewView)

@@ -79,7 +79,7 @@ var server = http.createServer(app).listen(app.get('port'), function () {
   console.log('Express server listening on port ', app.get('port'))
 })
 
-// var io = SocketIO.listen(server)
+var io = SocketIO.listen(server)
 // io.on('connection', function (socket) {
 //   console.log('User connected!')
 // })

@@ -3,6 +3,9 @@
   <head>
     <title>React Transform Boilerplate</title>
     <script src="/socket.io/socket.io.js"></script>
+    {{#if bugId}}
+    <script>window.bugId={{{bugId}}}</script>
+    {{/if}}
   </head>
   <body>
     <h1>{{{ProjectName}}} {{{bugId}}}</h1>

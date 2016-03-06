@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import { createReducer } from 'redux-act'
-import { receiveBugs, localUpdateBug } from './actions'
+import { receiveBugs, localUpdateBug, updateFilter } from './actions'
 
 const rtUpdates = createReducer({
   [localUpdateBug]: (state, payload) => {
@@ -13,6 +13,17 @@ const rtUpdates = createReducer({
     return { ...state, [payload['_id']]: newUpdates }
   }
 }, {})
+
+const filters = createReducer({
+  [updateFilter]: (state, payload) => {
+    return {...state, ...payload}
+  }
+}, {
+  _id: undefined,
+  priority: undefined,
+  owner: undefined,
+  description: undefined
+})
 
 const people = createReducer({
 }, {
@@ -76,7 +87,7 @@ const bugs = createReducer({
 })
 
 const combinedReducers = combineReducers({
-  bugs, people, rtUpdates
+  bugs, people, rtUpdates, filters
 })
 
 export const rootReducer = function (state = {}, action) {
