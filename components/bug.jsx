@@ -26,13 +26,19 @@ const Bug = React.createClass({
 
   render: function () {
     var rtUpdates = this.props.rtUpdates || {}
-    var { _id, description, priority, owner } = this.props.bug
+    var { _id, description, priority, owner, reporter, status } = this.props.bug
     var priorityOptions = ['Low', 'Medium', 'High', 'Highest']
     return (
       <div style={{margin: '20px', padding: '10px', backgroundColor: 'grey', textAlign: 'center'}}className='bug' data-bug-id={_id}>
-      <EditableField rtUpdates={rtUpdates.owner} people={this.props.people}>
-        <div>Owner: {owner}</div>
-      </EditableField>
+        <EditableField rtUpdates={rtUpdates.owner} people={this.props.people}>
+          <div>Owner: {owner}</div>
+        </EditableField>
+        <EditableField rtUpdates={rtUpdates.reporter} people={this.props.people}>
+          <div>Reporter: {reporter}</div>
+        </EditableField>
+        <EditableField rtUpdates={rtUpdates.status} people={this.props.people}>
+          <div>Status: {status}</div>
+        </EditableField>
         <EditableField rtUpdates={rtUpdates.priority} people={this.props.people}>
           Priority:
           <select value={priority}>

@@ -1,10 +1,12 @@
 import mongoose from 'mongoose'
+import timestamps from 'mongoose-timestamp'
+import { status as statusOptions, priority as priorityOptions } from './bug-enums'
 
-const bugSchema = new mongoose.Schema({
+const BugSchema = new mongoose.Schema({
   projectName: String,
-  status: { type: String, enum: ['Not Done', 'Done', 'Code Review', 'Deployed'], default: 'Not Done' },
+  status: { type: String, ...statusOptions },
   description: String,
-  priority: { type: String, enum: ['Low', 'Medium', 'High', 'Highest'], default: 'Low' },
+  priority: { type: String, ...priorityOptions },
   owner: { type: String, default: 'Unassigned' },
   reporter: String,
   screenshotURL: String,
@@ -17,8 +19,9 @@ const bugSchema = new mongoose.Schema({
   notes: String
 })
 
-bugSchema.index({ projectName: 'hashed' })
+BugSchema.index({ projectName: 'hashed' })
+BugSchema.plugin(timestamps)
 
-var Bug = mongoose.model('Bug', bugSchema)
+var Bug = mongoose.model('Bug', BugSchema)
 
 export default Bug

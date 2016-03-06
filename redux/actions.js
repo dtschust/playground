@@ -8,6 +8,8 @@ export const localUpdateBug = createAction('Update the state of a bug')
 
 export const updateFilter = createAction('Update an individual filter')
 
+export const updateSort = createAction('Change the sort key')
+
 export const fetchBugs = function () {
   return dispatch => {
     fetch('/api/bugs')

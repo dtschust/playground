@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import Bug from './bug'
 import People from './people'
 import Filters from './filters'
+import Sort from './sort'
 import _ from 'lodash'
 
 const DrewView = React.createClass({
@@ -31,15 +32,13 @@ const DrewView = React.createClass({
   render: function () {
     var {bugIds} = this.props
 
-    // people component
     // sortby component
-    // filters component
-    // list of bugs
     // bug creator
     return (
       <div>
         <People/>
         <Filters/>
+        <Sort/>
         <div className='bugs-container'>
           {
             bugIds.map((bugId) => {
@@ -53,7 +52,8 @@ const DrewView = React.createClass({
   }
 })
 
-const mapStateToProps = function ({bugs, filters}) {
+const mapStateToProps = function ({bugs, filters, sort}) {
+  // filter the bugs
   var filteredBugs = _.toArray(bugs)
   var filterNames = Object.keys(filters)
   filterNames.forEach((filter) => {
@@ -66,8 +66,21 @@ const mapStateToProps = function ({bugs, filters}) {
       return (bugVal.indexOf(filterVal) >= 0)
     })
   })
+
+  // now sort them
+  var { sortBy, sortOptions, direction } = sort
+  var customSort = sortOptions[sortBy].customSort
+  var inverseFactor = direction === 'desc' ? 1 : -1
+  var sortedBugs
+  if (customSort) {
+    sortedBugs = _.sortBy(filteredBugs, (bug) => {
+      return inverseFactor * customSort.indexOf(bug[sortBy])
+    })
+  } else {
+    sortedBugs = _.orderBy(filteredBugs, sortBy, direction)
+  }
   return {
-    bugIds: _.map(filteredBugs, '_id'),
+    bugIds: _.map(sortedBugs, '_id'),
     filters
   }
 }

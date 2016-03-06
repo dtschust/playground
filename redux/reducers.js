@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 import { createReducer } from 'redux-act'
-import { receiveBugs, localUpdateBug, updateFilter } from './actions'
+import { receiveBugs, localUpdateBug, updateFilter, updateSort } from './actions'
+import {status, priority } from '../bug-enums'
 
 const rtUpdates = createReducer({
   [localUpdateBug]: (state, payload) => {
@@ -23,6 +24,43 @@ const filters = createReducer({
   priority: undefined,
   owner: undefined,
   description: undefined
+})
+
+const sort = createReducer({
+  [updateSort]: (state, payload) => {
+    return {...state, ...payload}
+  }
+}, {
+  sortBy: 'createdAt',
+  direction: 'asc',
+  sortOptions: {
+    createdAt: {
+      displayName: 'Created At',
+      defaultDirection: 'asc'
+    },
+    updatedAt: {
+      displayName: 'Updated At',
+      defaultDirection: 'asc'
+    },
+    priority: {
+      displayName: 'Priority',
+      customSort: priority.enum.reverse(),
+      defaultDirection: 'desc'
+    },
+    owner: {
+      displayName: 'Owner',
+      defaultDirection: 'asc'
+    },
+    reporter: {
+      displayName: 'Reporter',
+      defaultDirection: 'asc'
+    },
+    status: {
+      displayName: 'Status',
+      customSort: status.enum.reverse(),
+      defaultDirection: 'asc'
+    }
+  }
 })
 
 const people = createReducer({
@@ -52,42 +90,60 @@ const bugs = createReducer({
     _id: 1,
     description: 'Bug #1',
     priority: 'Medium',
-    owner: 'Drew'
+    owner: 'Drew',
+    reporter: 'Tyke',
+    status: 'Backlog',
+    createdAt: 1
   },
   '2': {
     _id: 2,
     description: 'Bug #2',
-    priority: 'Medium',
-    owner: 'Drew'
+    priority: 'High',
+    owner: 'Greg',
+    reporter: 'Evan',
+    status: 'Done',
+    createdAt: 2
   },
   '3': {
     _id: 3,
     description: 'Bug #3',
-    priority: 'Medium',
-    owner: 'Drew'
+    priority: 'Low',
+    owner: 'Tyke',
+    reporter: 'Greg',
+    status: 'Code Review',
+    createdAt: 4
   },
   '4': {
     _id: 4,
     description: 'Bug #4',
-    priority: 'Medium',
-    owner: 'Drew'
+    priority: 'Highest',
+    owner: 'Lauren',
+    reporter: 'Tyke',
+    status: 'In Progress',
+    createdAt: 3
   },
   '5': {
     _id: 5,
     description: 'Bug #5',
     priority: 'Medium',
-    owner: 'Drew'
+    owner: 'Drew',
+    reporter: 'Lauren',
+    status: 'Deployed',
+    createdAt: 5
   },
   '6': {
     _id: 6,
     description: 'Bug #6',
-    priority: 'Medium',
-    owner: 'Drew'
+    priority: 'Low',
+    owner: 'Evan',
+    reporter: 'Lauren',
+    status: 'Will not fix',
+    createdAt: 6
   }
 })
 
 const combinedReducers = combineReducers({
-  bugs, people, rtUpdates, filters
+  bugs, people, rtUpdates, filters, sort
 })
 
 export const rootReducer = function (state = {}, action) {
