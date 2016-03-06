@@ -74,10 +74,6 @@ const people = createReducer({
     return {...state, [payload]: 'pink'}
   }
 }, {
-  Greg: 'red',
-  Evan: 'green',
-  Tyke: 'orange',
-  Lauren: 'purple'
 })
 
 const bugs = createReducer({
@@ -94,60 +90,6 @@ const bugs = createReducer({
     return {...state, [bug['_id']]: bug}
   }
 }, {
-  '1': {
-    _id: 1,
-    description: 'Bug #1',
-    priority: 'Medium',
-    owner: 'Drew',
-    reporter: 'Tyke',
-    status: 'Backlog',
-    createdAt: 1
-  },
-  '2': {
-    _id: 2,
-    description: 'Bug #2',
-    priority: 'High',
-    owner: 'Greg',
-    reporter: 'Evan',
-    status: 'Done',
-    createdAt: 2
-  },
-  '3': {
-    _id: 3,
-    description: 'Bug #3',
-    priority: 'Low',
-    owner: 'Tyke',
-    reporter: 'Greg',
-    status: 'Code Review',
-    createdAt: 4
-  },
-  '4': {
-    _id: 4,
-    description: 'Bug #4',
-    priority: 'Highest',
-    owner: 'Lauren',
-    reporter: 'Tyke',
-    status: 'In Progress',
-    createdAt: 3
-  },
-  '5': {
-    _id: 5,
-    description: 'Bug #5',
-    priority: 'Medium',
-    owner: 'Drew',
-    reporter: 'Lauren',
-    status: 'Deployed',
-    createdAt: 5
-  },
-  '6': {
-    _id: 6,
-    description: 'Bug #6',
-    priority: 'Low',
-    owner: 'Evan',
-    reporter: 'Lauren',
-    status: 'Will not fix',
-    createdAt: 6
-  }
 })
 
 const combinedReducers = combineReducers({
