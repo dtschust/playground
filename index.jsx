@@ -2,7 +2,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { localUpdateBug, updateFilter } from './redux/actions.js'
+import { localUpdateBug, updateFilter, identify } from './redux/actions.js'
 import configureStore from './redux/configureStore'
 import DrewView from './components/drew-view'
 
@@ -14,6 +14,12 @@ if (window.bugId) {
 }
 var people = store.getState().people
 
+var person = window.localStorage.getItem('person')
+while (!person) {
+  person = window.prompt('Please enter your name')
+  window.localStorage.setItem('person', person)
+}
+store.dispatch(identify(person))
 // Person randomly updating bugs
 // setInterval(function updateBugs () {
 //   if (window.stopUpdates) {

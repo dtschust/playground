@@ -10,6 +10,8 @@ export const updateFilter = createAction('Update an individual filter')
 
 export const updateSort = createAction('Change the sort key')
 
+export const identify = createAction('Store the user\'s name')
+
 export const fetchBugs = function () {
   return dispatch => {
     fetch('/api/bugs')

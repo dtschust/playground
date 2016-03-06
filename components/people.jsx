@@ -1,7 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-const People = ({people}) => {
+const People = ({people, identity}) => {
   var names = Object.keys(people)
+  if (names.indexOf(identity) >= 0) {
+    names.splice(names.indexOf(identity), 1)
+  }
+  names.unshift(identity)
+
   return (
     <div className='people'>
       {
@@ -23,4 +28,4 @@ People.propTypes = {
   people: React.PropTypes.object
 }
 
-export default connect(({people}) => ({people}))(People)
+export default connect(({people, identity}) => ({people, identity}))(People)

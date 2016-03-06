@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import { createReducer } from 'redux-act'
-import { receiveBugs, localUpdateBug, updateFilter, updateSort } from './actions'
+import { receiveBugs, localUpdateBug, updateFilter, updateSort, identify } from './actions'
 import {status, priority } from '../bug-enums'
 
 const rtUpdates = createReducer({
@@ -63,9 +63,17 @@ const sort = createReducer({
   }
 })
 
+const identity = createReducer({
+  [identify]: (state, payload) => {
+    return payload
+  }
+}, '')
+
 const people = createReducer({
+  [identify]: (state, payload) => {
+    return {...state, [payload]: 'pink'}
+  }
 }, {
-  Drew: 'pink',
   Greg: 'red',
   Evan: 'green',
   Tyke: 'orange',
@@ -143,7 +151,7 @@ const bugs = createReducer({
 })
 
 const combinedReducers = combineReducers({
-  bugs, people, rtUpdates, filters, sort
+  bugs, people, rtUpdates, filters, sort, identity
 })
 
 export const rootReducer = function (state = {}, action) {
