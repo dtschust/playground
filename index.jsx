@@ -88,6 +88,10 @@ socket.on(projectName + ':bugUpdated', ({updatedBug, updatedKey, person: updater
   store.dispatch(rtUpdate({rtUpdateKey, person: updater}))
 })
 
+document.addEventListener('visibilitychange', function () {
+  console.log(document.visibilityState)
+})
+
 ReactDOM.render((
   <Provider store={store}>
     <DrewView/>
