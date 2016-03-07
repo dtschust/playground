@@ -9,7 +9,7 @@ const Bug = React.createClass({
     bug: React.PropTypes.object.isRequired,
     rtUpdates: React.PropTypes.object,
     sortKey: React.PropTypes.string,
-    people: React.PropTypes.object
+    people: React.PropTypes.array
   },
 
   render: function () {

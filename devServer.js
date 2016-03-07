@@ -54,7 +54,6 @@ router.route('/bugs/:projectName?').get(function (req, res) {
       res.status(500)
       return res.send(err)
     }
-
     res.json(bugs)
   })
 }).post(function (req, res) {
@@ -69,6 +68,10 @@ router.route('/bugs/:projectName?').get(function (req, res) {
 
     res.json([newBug])
   })
+})
+
+router.route('/people/:projectName').get(function (req, res) {
+  res.json(people[req.params.projectName.toLowerCase()])
 })
 
 router.route('/bugs/:id').put(function (req, res) {
@@ -100,10 +103,13 @@ var server = http.createServer(app).listen(app.get('port'), function () {
   console.log('Express server listening on port ', app.get('port'))
 })
 
+var people = {}
 var io = SocketIO.listen(server)
 io.on('connection', function (socket) {
   console.log('User connected!')
-})
-io.on('newPerson', function () {
-  console.log('NEW PERSON')
+  socket.on('newPerson', (data) => {
+    people[data.projectName] = people[data.projectName] || []
+    people[data.projectName].push(data.person)
+    io.emit(data.projectName + ':newPerson', {person: data.person})
+  })
 })

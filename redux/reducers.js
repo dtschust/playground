@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 import { createReducer } from 'redux-act'
 import { receiveBugs, updateFilter, startRtUpdate,
-        stopRtUpdate,
+        stopRtUpdate, addPerson, removePerson, initPeople,
         updateSort, identify, startEditing, endEditing } from './actions'
 import {status, priority} from '../bug-enums'
 
@@ -84,10 +84,37 @@ const localEdits = createReducer({
 
 const people = createReducer({
   [identify]: (state, payload) => {
-    return {...state, [payload]: 'pink'}
+    var newPeople = [...state]
+    newPeople[0] = payload
+    return newPeople
+  },
+  [addPerson]: (state, payload) => {
+    var newPeople = [...state]
+    if (newPeople.indexOf(payload) < 0) {
+      newPeople.push(payload)
+      return newPeople
+    }
+    return state
+  },
+  [removePerson]: (state, payload) => {
+    var newPeople = [...state]
+    if (newPeople.indexOf(payload) >= 0) {
+      newPeople.splice(newPeople.indexOf(payload), 1)
+    }
+    return newPeople
+  },
+  [initPeople]: (state, payload) => {
+    var newPeople = [...state]
+    payload.forEach((person) => {
+      if (newPeople.indexOf(person < 0)) {
+        newPeople.push(person)
+      }
+    })
+    return newPeople
   }
-}, {
-})
+},
+[undefined]
+)
 
 const bugs = createReducer({
   [receiveBugs]: (state, payload) => {

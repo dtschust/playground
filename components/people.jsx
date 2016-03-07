@@ -1,18 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
-const People = ({people, identity}) => {
-  var names = Object.keys(people)
-  if (names.indexOf(identity) >= 0) {
-    names.splice(names.indexOf(identity), 1)
+const People = ({people}) => {
+  if (!people[0]) {
+    return <span/>
   }
-  names.unshift(identity)
-
   return (
     <div className='people'>
       {
-        names.map((person) => {
+        people.map((person) => {
           return (
-            <span key={person} className='person' style={{color: people[person]}}>
+            <span key={person} className='person' style={{color: 'orange'}}>
               {person}
             </span>
           )
@@ -25,7 +22,7 @@ const People = ({people, identity}) => {
 People.displayName = 'People'
 
 People.propTypes = {
-  people: React.PropTypes.object
+  people: React.PropTypes.array
 }
 
-export default connect(({people, identity}) => ({people, identity}))(People)
+export default connect(({people}) => ({people}))(People)

@@ -20,12 +20,31 @@ export const startRtUpdate = createAction('Start animating a rt update')
 
 export const stopRtUpdate = createAction('Stop animating a rt update')
 
+export const addPerson = createAction('Add a new person on connect')
+
+export const removePerson = createAction('Remove a person on disconnect')
+
+export const initPeople = createAction('Add all people currently on the same project')
+
 export const rtUpdate = function (payload) {
   return dispatch => {
     dispatch(startRtUpdate(payload))
     setTimeout(() => {
       dispatch(stopRtUpdate(payload))
     }, 500)
+  }
+}
+
+export const fetchPeople = function () {
+  return dispatch => {
+    fetch('/api/people/' + window.projectName.toLowerCase())
+      .then(function (response) {
+        return response.json()
+      }).then(function (json) {
+        dispatch(initPeople(json))
+      }).catch(function (error) {
+        console.log('json parsing failed', error)
+      })
   }
 }
 

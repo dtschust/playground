@@ -2,7 +2,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { updateFilter, identify, receiveBugs, fetchBugs, rtUpdate } from './redux/actions.js'
+import { updateFilter, identify, receiveBugs, fetchBugs, rtUpdate, addPerson, fetchPeople } from './redux/actions.js'
 import configureStore from './redux/configureStore'
 import DrewView from './components/drew-view'
 
@@ -23,10 +23,11 @@ while (!person) {
   window.localStorage.setItem('person', person)
 }
 store.dispatch(identify(person))
-
+store.dispatch(fetchPeople())
 // Fetch bugs every minute
 setInterval(function () {
   store.dispatch(fetchBugs())
+  store.dispatch(fetchPeople())
 }, 60000)
 
 // Person randomly updating bugs
@@ -64,9 +65,11 @@ setInterval(function () {
 var socket = io()
 
 var projectName = window.projectName.toLowerCase()
-socket.emit('newPerson', person)
-socket.on(projectName + ':newPerson', (person: newPerson) => {
-  console.log('NEW PERSON', newPerson)
+socket.emit('newPerson', {projectName, person})
+socket.on(projectName + ':newPerson', ({person: newPerson}) => {
+  if (newPerson !== person) {
+    store.dispatch(addPerson(newPerson))
+  }
 })
 socket.on(projectName + ':bugCreated', (bugs) => {
   store.dispatch(receiveBugs(bugs))
