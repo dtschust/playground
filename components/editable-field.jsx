@@ -61,22 +61,13 @@ const EditableField = React.createClass({
     ])
   },
 
-  getInitialState: function () {
-    return {
-      updating: false
-    }
-  },
-
   updateBugFromSelect: function (e) {
     var {id, fieldName} = this.props
     var update = {
       _id: id,
       [fieldName]: e.target.value
     }
-    this.setState({updating: true})
-    this.props.dispatch(updateBug(update)).then(() => {
-      this.setState({updating: false})
-    })
+    this.props.dispatch(updateBug(update))
     this.props.dispatch(endEditing())
   },
 
@@ -92,10 +83,8 @@ const EditableField = React.createClass({
       _id: id,
       [fieldName]: value
     }
-    this.setState({updating: true})
     this.props.dispatch(updateBug(update))
     this.props.dispatch(endEditing())
-    this.setState({updating: false})
   },
 
   toggleEdit: function () {
@@ -138,7 +127,7 @@ const EditableField = React.createClass({
     var { displayName } = fieldNameConfig[fieldName]
     return (
       <div className='editable-field-static-container'>
-        <CSSTransitionGroup transitionName='transition-fade' transitionEnterTimeout={6000} transitionLeaveTimeout={6000}>
+        <CSSTransitionGroup transitionName='transition-fade' transitionEnterTimeout={300} transitionLeaveTimeout={300}>
           <div className='editable-field-static' key={value}>{displayName}:{value}</div>
         </CSSTransitionGroup>
       </div>
@@ -151,10 +140,9 @@ const EditableField = React.createClass({
     return (
       <div className={classnames('editable-field',
         'editable-field--' + fieldName,
-        {'editable-field--locally-updated': this.state.updating},
         {'editable-field--externally-updated': externallyUpdated})}>
         <div className='editable-field-static-container'>
-          <CSSTransitionGroup transitionName='transition-fade' transitionEnterTimeout={6000} transitionLeaveTimeout={6000}>
+          <CSSTransitionGroup transitionName='transition-fade' transitionEnterTimeout={300} transitionLeaveTimeout={300}>
             <div className='editable-field-static' key={value}>
               {displayName}:
               <select key={value} defaultValue={value} onChange={this.updateBugFromSelect}>
@@ -189,7 +177,6 @@ const EditableField = React.createClass({
     return (
       <div className={classnames('editable-field',
         'editable-field--' + fieldName,
-        {'editable-field--locally-updated': this.state.updating},
         {'editable-field--externally-updated': externallyUpdated})}
         {...eventHandlers}>
         <EditToggle isEdit={isEdit} toggleEdit={this.toggleEdit}/>
