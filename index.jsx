@@ -2,7 +2,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { updateFilter, identify, receiveBugs, fetchBugs, rtUpdate, addPerson, fetchPeople } from './redux/actions.js'
+import { updateFilter, identify, receiveBugs, fetchBugs, rtUpdate, addPerson, removePerson, fetchPeople } from './redux/actions.js'
 import configureStore from './redux/configureStore'
 import DrewView from './components/drew-view'
 
@@ -69,6 +69,11 @@ socket.emit('newPerson', {projectName, person})
 socket.on(projectName + ':newPerson', ({person: newPerson}) => {
   if (newPerson !== person) {
     store.dispatch(addPerson(newPerson))
+  }
+})
+socket.on(projectName + ':disconnect', ({person: disconnectedPerson}) => {
+  if (disconnectedPerson !== person) {
+    store.dispatch(removePerson(disconnectedPerson))
   }
 })
 socket.on(projectName + ':bugCreated', (bugs) => {

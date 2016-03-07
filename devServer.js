@@ -20,7 +20,7 @@ app.engine('.hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}))
 app.set('view engine', '.hbs')
 
 // let us get the ip of the request
-app.enable('trust proxy')
+// app.enable('trust proxy')
 
 var compiler = webpack(config)
 
@@ -42,8 +42,8 @@ app.get('/:projectName/:id?', function (req, res) {
     res.render('index', {
       projectName: req.params.projectName.toLowerCase(),
       bugId: req.params.id,
-      bugs: JSON.stringify(bugs),
-      ip: req.ip // not sure if this works yet
+      bugs: JSON.stringify(bugs)
+      // ip: req.ip // not sure if this works yet
     })
   })
 })
@@ -124,6 +124,7 @@ io.on('connection', function (socket) {
     })
     if (index >= 0) {
       console.log('Removing ', projectPeople[index].person)
+      io.emit(projectName + ':disconnect', {person: projectPeople[index].person})
       projectPeople.splice(index, 1)
     }
   })

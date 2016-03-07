@@ -105,9 +105,16 @@ const people = createReducer({
   },
   [initPeople]: (state, payload) => {
     var newPeople = [...state]
-    payload.forEach((person) => {
+    payload.forEach((person, i) => {
       if (newPeople.indexOf(person < 0)) {
         newPeople.push(person)
+      }
+    })
+
+    // Remove people that have disconnected
+    newPeople.forEach((person, i) => {
+      if (payload.indexOf(person) < 0 && i !== 0) {
+        newPeople.splice(i, 1)
       }
     })
     return newPeople
