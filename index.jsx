@@ -66,10 +66,13 @@ var projectName = window.projectName.toLowerCase()
 socket.on(projectName + ':bugCreated', (bugs) => {
   store.dispatch(receiveBugs(bugs))
 })
-socket.on(projectName + ':bugUpdated', ({updatedBug, updatedKey, person}) => {
+socket.on(projectName + ':bugUpdated', ({updatedBug, updatedKey, person: updater}) => {
+  if (person === updater) {
+    return
+  }
   var rtUpdateKey = updatedBug._id + ':' + updatedKey
   store.dispatch(receiveBugs([updatedBug]))
-  store.dispatch(rtUpdate({rtUpdateKey, person}))
+  store.dispatch(rtUpdate({rtUpdateKey, person: updater}))
 })
 
 ReactDOM.render((
