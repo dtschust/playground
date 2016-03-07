@@ -8,7 +8,7 @@ const Sort = ({sort, dispatch}) => {
   var {sortBy, direction} = sort
   return (
     <div className='sort'>
-      <h3>Sort</h3>
+      <span>Sort:</span>
       {
         sortOptions.map((optionKey) => {
           var option = sort.sortOptions[optionKey]

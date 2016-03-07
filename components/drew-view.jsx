@@ -27,7 +27,7 @@ const DrewView = React.createClass({
     return (
       <div className='drew-view' onClick={this.unFocus}>
         <People/>
-        <h1>{window.projectName}</h1>
+        <h1>Project: {window.projectName}</h1>
         <Filters/>
         <Sort/>
         <div className='bugs-container'>

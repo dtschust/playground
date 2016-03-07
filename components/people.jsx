@@ -7,7 +7,7 @@ const People = ({people}) => {
   }
   return (
     <div className='people-container'>
-      <h3>Currently Connected</h3>
+      <span>Currently Connected:</span>
       {
         people.map((person, i) => {
           return (

@@ -29,7 +29,7 @@ const Filters = ({filters, dispatch}) => {
   var filterNames = Object.keys(filters)
   return (
     <div className='filters'>
-      <h3>Filters</h3>
+      <span>Filters:</span>
       {
         filterNames.map((filter) => {
           if (selectFilters[filter]) {
