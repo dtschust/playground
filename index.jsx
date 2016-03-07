@@ -2,7 +2,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { localUpdateBug, updateFilter, identify } from './redux/actions.js'
+import { localUpdateBug, updateFilter, identify, receiveBugs } from './redux/actions.js'
 import configureStore from './redux/configureStore'
 import DrewView from './components/drew-view'
 
@@ -11,6 +11,9 @@ require('./styles/index.less')
 var store = configureStore()
 if (window.bugId) {
   store.dispatch(updateFilter({ _id: window.bugId }))
+}
+if (window.initialBugs) {
+  store.dispatch(receiveBugs(window.initialBugs))
 }
 var people = store.getState().people
 

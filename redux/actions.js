@@ -14,7 +14,7 @@ export const identify = createAction('Store the user\'s name')
 
 export const fetchBugs = function () {
   return dispatch => {
-    fetch('/api/bugs')
+    fetch('/api/bugs/' + window.projectName.toLowerCase())
       .then(function (response) {
         return response.json()
       }).then(function (json) {

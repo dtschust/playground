@@ -3,16 +3,16 @@ import config from './webpack.config.js'
 import express from 'express'
 import http from 'http'
 import bodyParser from 'body-parser'
-// import mongoose from 'mongoose'
+import mongoose from 'mongoose'
 import Bug from './bug'
 import SocketIO from 'socket.io'
-// import { url } from './mongo-config'
+import { url } from './mongo-config'
 var router = express.Router()
 
-// mongoose.connect(url)
-// mongoose.connection.on('error', function () {
-//   console.info('Error: Could not connect to MongoDB.')
-// })
+mongoose.connect(url)
+mongoose.connection.on('error', function () {
+  console.info('Error: Could not connect to MongoDB.')
+})
 
 var app = express()
 var exphbs = require('express-handlebars');
@@ -34,16 +34,23 @@ app.use(require('webpack-hot-middleware')(compiler))
 app.use(bodyParser.json())
 
 app.get('/:projectName/:id?', function (req, res) {
-  console.log('oh hello', req.ip)
-  res.render('index', {
-    projectName: req.params.projectName.toLowerCase(),
-    bugId: req.params.id,
-    ip: req.ip // not sure if this works yet
+  Bug.find({projectName: req.params.projectName.toLowerCase()}, function (err, bugs) {
+    if (err) {
+      res.status(500)
+      return res.send(err)
+    }
+    console.log(bugs)
+    res.render('index', {
+      projectName: req.params.projectName.toLowerCase(),
+      bugId: req.params.id,
+      bugs: JSON.stringify(bugs),
+      ip: req.ip // not sure if this works yet
+    })
   })
 })
 
-router.route('/bugs').get(function (req, res) {
-  Bug.find(function (err, bugs) {
+router.route('/bugs/:projectName?').get(function (req, res) {
+  Bug.find({projectName: req.params.projectName.toLowerCase()}, function (err, bugs) {
     if (err) {
       res.status(500)
       return res.send(err)
@@ -82,6 +89,6 @@ var server = http.createServer(app).listen(app.get('port'), function () {
 })
 
 var io = SocketIO.listen(server)
-// io.on('connection', function (socket) {
-//   console.log('User connected!')
-// })
+io.on('connection', function (socket) {
+  console.log('User connected!')
+})

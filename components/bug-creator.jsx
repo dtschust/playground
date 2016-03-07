@@ -14,7 +14,7 @@ const BugCreator = React.createClass({
     var inputs = Object.keys(this.refs)
     var form = this.form
 
-    var projectName = window.projectName
+    var projectName = window.projectName.toLowerCase()
     var reporter = 'Drew' // Will prompt for this and grab from localStorage
     var formData = inputs.reduce((prev, curr) => {
       prev[curr] = this.refs[curr].value

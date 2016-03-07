@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-// import { fetchBugs, createBug } from '../redux/actions.js'
+// import { fetchBugs } from '../redux/actions.js'
 import Bug from './bug'
 import People from './people'
 import Filters from './filters'
@@ -14,10 +14,6 @@ const DrewView = React.createClass({
   propTypes: {
     dispatch: React.PropTypes.func.isRequired,
     bugIds: React.PropTypes.array.isRequired
-  },
-
-  componentDidMount: function () {
-    // this.props.dispatch(fetchBugs())
   },
 
   render: function () {

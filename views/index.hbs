@@ -12,6 +12,9 @@
     {{#if projectName}}
     <script>window.projectName='{{{projectName}}}'</script>
     {{/if}}
+    {{#if bugs}}
+    <script>window.initialBugs={{{bugs}}}</script>
+    {{/if}}
   </head>
   <body>
     <h1>{{{projectName}}} {{{bugId}}}</h1>
