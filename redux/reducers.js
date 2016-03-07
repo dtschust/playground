@@ -23,7 +23,8 @@ const filters = createReducer({
   _id: undefined,
   priority: undefined,
   owner: undefined,
-  description: undefined
+  description: undefined,
+  status: undefined
 })
 
 const sort = createReducer({

@@ -1,20 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {priority as priorityEnum} from '../bug-enums'
-
-const EditableField = ({rtUpdates, children, people}) => {
-  var classes = rtUpdates ? 'editable-field new' : 'editable-field'
-  var style = {}
-  if (rtUpdates) {
-    style = {backgroundColor: people[rtUpdates]}
-  }
-  return (
-    <div style={style} className={classes}>
-      {rtUpdates && <div>Edited by {rtUpdates}</div>}
-      {children}
-    </div>
-  )
-}
+import EditableField from './editable-field'
 
 const Bug = React.createClass({
   displayName: 'Bug',

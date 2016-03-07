@@ -22,7 +22,6 @@ const BugCreator = React.createClass({
     }, {})
     formData.reporter = reporter
     formData.projectName = projectName
-    console.log(formData)
     this.props.dispatch(createBug(formData)).then(function () {
       form.reset()
     })

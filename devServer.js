@@ -39,7 +39,6 @@ app.get('/:projectName/:id?', function (req, res) {
       res.status(500)
       return res.send(err)
     }
-    console.log(bugs)
     res.render('index', {
       projectName: req.params.projectName.toLowerCase(),
       bugId: req.params.id,

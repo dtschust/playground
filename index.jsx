@@ -2,7 +2,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { localUpdateBug, updateFilter, identify, receiveBugs } from './redux/actions.js'
+import { localUpdateBug, updateFilter, identify, receiveBugs, fetchBugs } from './redux/actions.js'
 import configureStore from './redux/configureStore'
 import DrewView from './components/drew-view'
 
@@ -23,6 +23,11 @@ while (!person) {
   window.localStorage.setItem('person', person)
 }
 store.dispatch(identify(person))
+
+// Fetch bugs every minute
+setInterval(function () {
+  store.dispatch(fetchBugs())
+}, 60000)
 
 // Person randomly updating bugs
 // setInterval(function updateBugs () {
