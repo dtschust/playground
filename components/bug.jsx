@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {priority as priorityEnum} from '../bug-enums'
 import EditableField from './editable-field'
 
 const Bug = React.createClass({
@@ -14,32 +13,22 @@ const Bug = React.createClass({
   },
 
   render: function () {
-    var rtUpdates = this.props.rtUpdates || {}
-    var { description, priority, owner, reporter, status } = this.props.bug
-    var priorityOptions = priorityEnum.enum
+    var { _id, consoleErrors } = this.props.bug
     return (
       <div style={{margin: '20px', padding: '10px', backgroundColor: 'grey', textAlign: 'center'}}
         className='bug'>
-        <EditableField rtUpdates={rtUpdates.owner} people={this.props.people}>
-          <div>Owner: {owner}</div>
-        </EditableField>
-        <EditableField rtUpdates={rtUpdates.reporter} people={this.props.people}>
-          <div>Reporter: {reporter}</div>
-        </EditableField>
-        <EditableField rtUpdates={rtUpdates.status} people={this.props.people}>
-          <div>Status: {status}</div>
-        </EditableField>
-        <EditableField rtUpdates={rtUpdates.priority} people={this.props.people}>
-          Priority:
-          <select value={priority}>
-            {priorityOptions.map((priorityOption) => {
-              return (<option key={priorityOption} value={priorityOption}>{priorityOption}</option>)
-            })}
-          </select>
-        </EditableField>
-        <EditableField rtUpdates={rtUpdates.description} people={this.props.people}>
-          <div>Description: {description}</div>
-        </EditableField>
+        <EditableField fieldName='status' id={_id}/>
+        <EditableField fieldName='description' id={_id}/>
+        <EditableField fieldName='priority' id={_id}/>
+        <EditableField fieldName='owner' id={_id}/>
+        <EditableField fieldName='reporter' id={_id}/>
+        <EditableField fieldName='screenshotURL' id={_id}/>
+        <EditableField fieldName='notes' id={_id}/>
+        <EditableField fieldName='pullRequestURL' id={_id}/>
+        <EditableField fieldName='jiraURL' id={_id}/>
+        <div>
+          <div>Console Errors: {JSON.stringify(consoleErrors)}</div>
+        </div>
       </div>
     )
   }

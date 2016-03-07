@@ -15,9 +15,9 @@ mongoose.connection.on('error', function () {
 })
 
 var app = express()
-var exphbs = require('express-handlebars');
-app.engine('.hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}));
-app.set('view engine', '.hbs');
+var exphbs = require('express-handlebars')
+app.engine('.hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}))
+app.set('view engine', '.hbs')
 
 // let us get the ip of the request
 app.enable('trust proxy')
@@ -64,20 +64,33 @@ router.route('/bugs/:projectName?').get(function (req, res) {
       res.status(500)
       return res.send(err)
     }
-    io.emit('bugUpdate', [newBug])
+    var projectName = newBug.projectName.toLowerCase()
+    io.emit(projectName + ':bugCreated', [newBug])
 
     res.json([newBug])
   })
 })
 
 router.route('/bugs/:id').put(function (req, res) {
+  var person = req.body.person
+  delete req.body.person
   Bug.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, updatedBug) {
     if (err) {
       res.status(500)
       return res.send(err)
     }
-    io.emit('bugUpdate', [updatedBug])
-    return res.json(updatedBug)
+    var projectName = updatedBug.projectName.toLowerCase()
+    var updatedKeys = Object.keys(req.body)
+    if (updatedKeys.indexOf('_id') >= 0) {
+      updatedKeys.splice(updatedKeys.indexOf('_id'), 1)
+    }
+    var update = {
+      updatedBug: updatedBug,
+      updatedKey: updatedKeys[0],
+      person
+    }
+    io.emit(projectName + ':bugUpdated', update)
+    return res.json([updatedBug])
   })
 })
 

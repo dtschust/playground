@@ -1,0 +1,25 @@
+.editable-field {
+  border: 1px solid blue;
+  padding: 10px;
+  margin: 5px;
+  background-color: grey;
+  transition: background-color 200ms linear;
+  &__edit-toggle {
+    color: blue;
+  }
+  &--externally-updated {
+    background-color: blue;
+  }
+}
+
+.editable-field-static-container {
+  position: relative;
+  overflow: hidden;
+  height: 30px;
+}
+
+.editable-field-static {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}

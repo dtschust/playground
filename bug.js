@@ -18,8 +18,8 @@ const BugSchema = new mongoose.Schema({
   actions: [Object],
   notes: String,
   analyticsURLs: [String],
-  pullRequestURL: [String],
-  jiraURL: [String]
+  pullRequestURL: String,
+  jiraURL: String
 })
 
 BugSchema.index({ projectName: 'hashed' })

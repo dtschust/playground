@@ -1,19 +1,19 @@
 import { combineReducers } from 'redux'
 import { createReducer } from 'redux-act'
-import { receiveBugs, localUpdateBug, updateFilter, updateSort, identify } from './actions'
-import {status, priority } from '../bug-enums'
+import { receiveBugs, updateFilter, startRtUpdate,
+        stopRtUpdate,
+        updateSort, identify, startEditing, endEditing } from './actions'
+import {status, priority} from '../bug-enums'
 
 const rtUpdates = createReducer({
-  [localUpdateBug]: (state, payload) => {
-    var rtUpdate = state[payload['_id']]
-    var updates = {}
-    Object.keys(payload.updates).forEach((key) => {
-      updates[key] = payload.person
-    })
-    var newUpdates = {...rtUpdate, ...updates}
-    return { ...state, [payload['_id']]: newUpdates }
+  [startRtUpdate]: (state, payload) => {
+    return {...state, [payload.rtUpdateKey]: payload.person || true}
+  },
+  [stopRtUpdate]: (state, payload) => {
+    return { ...state, [payload.rtUpdateKey]: false }
   }
-}, {})
+}, {
+})
 
 const filters = createReducer({
   [updateFilter]: (state, payload) => {
@@ -70,6 +70,18 @@ const identity = createReducer({
   }
 }, '')
 
+const localEdits = createReducer({
+  [startEditing]: (state, payload) => {
+    return payload
+  },
+  [endEditing]: (state, payload) => {
+    return {id: undefined, field: undefined}
+  }
+}, {
+  id: undefined,
+  field: undefined
+})
+
 const people = createReducer({
   [identify]: (state, payload) => {
     return {...state, [payload]: 'pink'}
@@ -84,17 +96,17 @@ const bugs = createReducer({
       return prev
     }, {})
     return {...state, ...newBugs}
-  },
+  }/*,
   [localUpdateBug]: (state, payload) => {
     var bug = {...state[payload['_id']], ...payload.updates}
     // bug[payload.key] = payload.value
     return {...state, [bug['_id']]: bug}
-  }
+  }*/
 }, {
 })
 
 const combinedReducers = combineReducers({
-  bugs, people, rtUpdates, filters, sort, identity
+  bugs, people, rtUpdates, filters, sort, identity, localEdits
 })
 
 export const rootReducer = function (state = {}, action) {

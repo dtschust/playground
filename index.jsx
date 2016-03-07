@@ -1,8 +1,8 @@
-// /* global io */
+/* global io */
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { localUpdateBug, updateFilter, identify, receiveBugs, fetchBugs } from './redux/actions.js'
+import { updateFilter, identify, receiveBugs, fetchBugs, rtUpdate } from './redux/actions.js'
 import configureStore from './redux/configureStore'
 import DrewView from './components/drew-view'
 
@@ -61,10 +61,16 @@ setInterval(function () {
 //   }))
 // }, 500)
 
-// var socket = io()
-// socket.on('bugUpdate', (bugs) => {
-//   store.dispatch(receiveBugs(bugs))
-// })
+var socket = io()
+var projectName = window.projectName.toLowerCase()
+socket.on(projectName + ':bugCreated', (bugs) => {
+  store.dispatch(receiveBugs(bugs))
+})
+socket.on(projectName + ':bugUpdated', ({updatedBug, updatedKey, person}) => {
+  var rtUpdateKey = updatedBug._id + ':' + updatedKey
+  store.dispatch(receiveBugs([updatedBug]))
+  store.dispatch(rtUpdate({rtUpdateKey, person}))
+})
 
 ReactDOM.render((
   <Provider store={store}>
