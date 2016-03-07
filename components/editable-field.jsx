@@ -74,9 +74,10 @@ const EditableField = React.createClass({
       [fieldName]: e.target.value
     }
     this.setState({updating: true})
-    this.props.dispatch(updateBug(update))
+    this.props.dispatch(updateBug(update)).then(() => {
+      this.setState({updating: false})
+    })
     this.props.dispatch(endEditing())
-    this.setState({updating: false})
   },
 
   updateBugFromInput: function (e) {
@@ -137,7 +138,7 @@ const EditableField = React.createClass({
     var { displayName } = fieldNameConfig[fieldName]
     return (
       <div className='editable-field-static-container'>
-        <CSSTransitionGroup transitionName='transition-fade' transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+        <CSSTransitionGroup transitionName='transition-fade' transitionEnterTimeout={6000} transitionLeaveTimeout={6000}>
           <div className='editable-field-static' key={value}>{displayName}:{value}</div>
         </CSSTransitionGroup>
       </div>
@@ -153,7 +154,7 @@ const EditableField = React.createClass({
         {'editable-field--locally-updated': this.state.updating},
         {'editable-field--externally-updated': externallyUpdated})}>
         <div className='editable-field-static-container'>
-          <CSSTransitionGroup transitionName='transition-fade' transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+          <CSSTransitionGroup transitionName='transition-fade' transitionEnterTimeout={6000} transitionLeaveTimeout={6000}>
             <div className='editable-field-static' key={value}>
               {displayName}:
               <select key={value} defaultValue={value} onChange={this.updateBugFromSelect}>
@@ -170,14 +171,11 @@ const EditableField = React.createClass({
   },
 
   render: function () {
-    var { fieldName, value, isEdit, externallyUpdated } = this.props
+    var { fieldName, isEdit, externallyUpdated } = this.props
     var { editType } = fieldNameConfig[fieldName]
     var eventHandlers = {}
     if (!isEdit) {
       eventHandlers.onClick = this.toggleEdit
-    }
-    if (!value) {
-      return <span/>
     }
     if (editType === 'select') {
       return this.renderSelect()

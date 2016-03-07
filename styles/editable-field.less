@@ -10,34 +10,35 @@
   &--externally-updated {
     background-color: blue;
   }
+
   .transition-fade-enter {
     transform: translateY(100px);
-    transition: transform 200ms linear;
-    &&-active {
+    transition: transform 5000ms linear;
+    &-active {
       transform: translateY(0);
     }
   }
 
   .transition-fade-leave {
     transform: translateY(0px);
-    transition: transform 200ms linear;
-    &&-active {
+    transition: transform 5000ms linear;
+    &-active {
       transform: translateY(-100px);
     }
   }
   &--locally-updated {
     .transition-fade-enter {
-      transform: translateY(0);
-      transition: transform 200ms linear;
-      &&-active {
+      transform: translateY(0) !important;
+      transition: transform 5000ms linear;
+      &-active {
         transform: translateY(0);
       }
     }
 
     .transition-fade-leave {
-      transform: translateY(0px);
-      transition: transform 200ms linear;
-      &&-active {
+      transform: translateY(0px) !important;
+      transition: transform 5000ms linear;
+      &-active {
         transform: translateY(0px);
       }
     }

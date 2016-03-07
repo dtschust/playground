@@ -15,7 +15,7 @@ if (window.bugId) {
 if (window.initialBugs) {
   store.dispatch(receiveBugs(window.initialBugs))
 }
-var people = store.getState().people
+// var people = store.getState().people
 
 var person = window.localStorage.getItem('person')
 while (!person) {
@@ -62,7 +62,12 @@ setInterval(function () {
 // }, 500)
 
 var socket = io()
+
 var projectName = window.projectName.toLowerCase()
+socket.emit('newPerson', person)
+socket.on(projectName + ':newPerson', (person: newPerson) => {
+  console.log('NEW PERSON', newPerson)
+})
 socket.on(projectName + ':bugCreated', (bugs) => {
   store.dispatch(receiveBugs(bugs))
 })

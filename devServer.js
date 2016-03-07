@@ -104,3 +104,6 @@ var io = SocketIO.listen(server)
 io.on('connection', function (socket) {
   console.log('User connected!')
 })
+io.on('newPerson', function () {
+  console.log('NEW PERSON')
+})

@@ -46,7 +46,7 @@ export const updateBug = function (bug) {
   return (dispatch, getState) => {
     var id = bug._id
     bug.person = getState().identity
-    fetch('/api/bugs/' + id, {
+    return fetch('/api/bugs/' + id, {
       method: 'put',
       headers: {
         'Accept': 'application/json',
