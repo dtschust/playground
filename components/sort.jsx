@@ -18,7 +18,7 @@ const Sort = ({sort, dispatch}) => {
           }
           return (
             <span key={optionKey}
-              className={classnames('option', {active: optionKey === sortBy}, directionClass)}
+              className={classnames('sort-option', {active: optionKey === sortBy}, directionClass)}
               onClick={(e) => {
                 var newSortBy = optionKey
                 var newDirection = option.defaultDirection

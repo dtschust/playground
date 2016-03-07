@@ -1,0 +1,16 @@
+.sort-option {
+  background-color: grey;
+  padding: 5px 20px;
+  margin: 0 5px;
+  &.active {
+    background-color: blue;
+  }
+  &.asc:after {
+    content: '▲';
+    display: inline;
+  }
+  &.desc:after {
+    content: '▼';
+    display: inline;
+  }
+}
