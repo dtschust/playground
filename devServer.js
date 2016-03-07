@@ -71,7 +71,7 @@ router.route('/bugs/:projectName?').get(function (req, res) {
 })
 
 router.route('/people/:projectName').get(function (req, res) {
-  res.json(people[req.params.projectName.toLowerCase()])
+  res.json((people[req.params.projectName.toLowerCase()] || []).map((peopleObj) => peopleObj.person))
 })
 
 router.route('/bugs/:id').put(function (req, res) {
@@ -107,9 +107,24 @@ var people = {}
 var io = SocketIO.listen(server)
 io.on('connection', function (socket) {
   console.log('User connected!')
+  var projectName = ''
   socket.on('newPerson', (data) => {
-    people[data.projectName] = people[data.projectName] || []
-    people[data.projectName].push(data.person)
-    io.emit(data.projectName + ':newPerson', {person: data.person})
+    projectName = data.projectName
+    people[projectName] = people[projectName] || []
+    people[projectName].push({person: data.person, socket})
+    io.emit(projectName + ':newPerson', {person: data.person})
+  })
+  socket.on('disconnect', () => {
+    var index = -1
+    var projectPeople = people[projectName] || []
+    projectPeople.forEach((person, i) => {
+      if (person.socket === socket) {
+        index = i
+      }
+    })
+    if (index >= 0) {
+      console.log('Removing ', projectPeople[index].person)
+      projectPeople.splice(index, 1)
+    }
   })
 })

@@ -13,7 +13,7 @@ const Bug = React.createClass({
   },
 
   render: function () {
-    var { _id, consoleErrors } = this.props.bug
+    var { _id, consoleErrors, createdAt, updatedAt } = this.props.bug
     return (
       <div style={{margin: '20px', padding: '10px', backgroundColor: 'grey', textAlign: 'center'}}
         className='bug'>
@@ -28,6 +28,8 @@ const Bug = React.createClass({
         <EditableField fieldName='jiraURL' id={_id}/>
         <div>
           <div>Console Errors: {JSON.stringify(consoleErrors)}</div>
+          <div>Created at: {createdAt}</div>
+          <div>Updated at: {updatedAt}</div>
         </div>
       </div>
     )
