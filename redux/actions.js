@@ -26,6 +26,10 @@ export const removePerson = createAction('Remove a person on disconnect')
 
 export const initPeople = createAction('Add all people currently on the same project')
 
+export const focusOnBug = createAction('Focus on one bug')
+
+export const clearFocus = createAction('Clear focus on a bug')
+
 export const rtUpdate = function (payload) {
   return dispatch => {
     dispatch(startRtUpdate(payload))

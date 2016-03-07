@@ -1,5 +1,8 @@
 .editable-field {
-  border: 1px solid blue;
+  position: relative;
+  border: 1px solid black;
+  .addRTColorsToProperty(4; border-color);
+  .addRTColorsToProperty(4; background-color);
   padding: 10px;
   margin: 5px;
   background-color: grey;
@@ -7,35 +10,42 @@
   &__edit-toggle {
     color: blue;
   }
+  &__updater {
+    position: absolute;
+    right: 20px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: 18px;
+  }
   &--externally-updated {
-    background-color: blue;
 
-    .transition-fade-enter {
-      transform: translateY(100px);
-      transition: transform 200ms linear;
-      &-active {
-        transform: translateY(0);
-      }
-    }
-
-    .transition-fade-leave {
-      transform: translateY(0px);
-      transition: transform 200ms linear;
-      &-active {
-        transform: translateY(-100px);
-      }
-    }
+    // .transition-fade-enter {
+    //   transform: translateY(100px);
+    //   transition: transform 200ms linear;
+    //   &-active {
+    //     transform: translateY(0);
+    //   }
+    // }
+    //
+    // .transition-fade-leave {
+    //   transform: translateY(0px);
+    //   transition: transform 200ms linear;
+    //   &-active {
+    //     transform: translateY(-100px);
+    //   }
+    // }
   }
 }
 
 .editable-field-static-container {
-  position: relative;
-  overflow: hidden;
-  height: 30px;
+  // position: relative;
+  // overflow: hidden;
+  // height: 30px;
 }
 
 .editable-field-static {
-  position: absolute;
-  height: 100%;
-  width: 100%;
+  // position: absolute;
+  // height: 100%;
+  // width: 100%;
 }

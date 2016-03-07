@@ -24,6 +24,9 @@ while (!person) {
 }
 store.dispatch(identify(person))
 store.dispatch(fetchPeople())
+setTimeout(() => {
+  store.dispatch(fetchPeople())
+}, 5000)
 // Fetch bugs every minute
 setInterval(function () {
   store.dispatch(fetchBugs())

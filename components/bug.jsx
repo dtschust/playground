@@ -1,22 +1,32 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { focusOnBug } from '../redux/actions'
 import EditableField from './editable-field'
+import classnames from 'classnames'
 
 const Bug = React.createClass({
   displayName: 'Bug',
 
   propTypes: {
+    dispatch: React.PropTypes.func,
     bug: React.PropTypes.object.isRequired,
     rtUpdates: React.PropTypes.object,
     sortKey: React.PropTypes.string,
+    isFocused: React.PropTypes.bool,
     people: React.PropTypes.array
+  },
+
+  focusOnBug: function (e) {
+    e.stopPropagation()
+    this.props.dispatch(focusOnBug(this.props.bug._id))
   },
 
   render: function () {
     var { _id, consoleErrors, createdAt, updatedAt } = this.props.bug
+    var { isFocused } = this.props
     return (
       <div style={{margin: '20px', padding: '10px', backgroundColor: 'grey', textAlign: 'center'}}
-        className='bug'>
+        className={classnames('bug', {focused: isFocused})} onClick={this.focusOnBug}>
         <EditableField fieldName='status' id={_id}/>
         <EditableField fieldName='description' id={_id}/>
         <EditableField fieldName='priority' id={_id}/>
@@ -36,9 +46,10 @@ const Bug = React.createClass({
   }
 })
 
-const mapStateToProps = function ({bugs, rtUpdates, people, sort}, {id}) {
+const mapStateToProps = function ({bugs, rtUpdates, people, sort, focus}, {id}) {
   return {
     bug: bugs[id],
+    isFocused: focus === id,
     rtUpdates: rtUpdates[id],
     sortKey: sort.sortKey,
     people

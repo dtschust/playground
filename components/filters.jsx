@@ -18,7 +18,7 @@ const renderSelect = (dispatch, filterKey, filterValue) => {
         dispatch(updateFilter({[filterKey]: value}))
       }}>
         {enums.map((option) => {
-          return (<option key={option} value={option}>{option || filterKey}</option>)
+          return (<option key={option || filterKey} value={option}>{option || filterKey}</option>)
         })}
       </select>
     </span>

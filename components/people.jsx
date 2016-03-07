@@ -1,15 +1,18 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import classnames from 'classnames'
 const People = ({people}) => {
   if (!people[0]) {
     return <span/>
   }
   return (
-    <div className='people'>
+    <div className='people-container'>
+      <h3>Currently Connected</h3>
       {
-        people.map((person) => {
+        people.map((person, i) => {
           return (
-            <span key={person} className='person' style={{color: 'orange'}}>
+            <span key={person}
+              className={classnames('people-container__person', 'color' + i)}>
               {person}
             </span>
           )

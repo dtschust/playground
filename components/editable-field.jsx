@@ -6,44 +6,68 @@ import classnames from 'classnames'
 import CSSTransitionGroup from 'react-addons-css-transition-group'
 import { status as statusOptions, priority as priorityOptions } from '../bug-enums'
 
+const GenericFieldDisplay = ({value, displayName}) => {
+  return (
+    <div className='editable-field-static' key={value}>{displayName}:{value}</div>
+  )
+}
+
+const ImageDisplay = ({value, displayName}) => {
+  return (
+    <div className='editable-field-static editable-field-static--image' key={value}>
+      <img src={value}/>
+    </div>
+  )
+}
+
 var fieldNameConfig = {
   status: {
     displayName: 'Status',
     editType: 'select',
-    options: statusOptions.enum
+    options: statusOptions.enum,
+    hideUntilFocused: false
   },
   description: {
     displayName: 'Description',
-    editType: 'textarea'
+    editType: 'textarea',
+    hideUntilFocused: false
   },
   priority: {
     displayName: 'Priority',
     editType: 'select',
-    options: priorityOptions.enum
+    options: priorityOptions.enum,
+    hideUntilFocused: false
   },
   owner: {
     displayName: 'Owner',
-    editType: 'text'
+    editType: 'text',
+    hideUntilFocused: false
   },
   reporter: {
     displayName: 'Reporter',
-    editType: 'text'
+    editType: 'text',
+    hideUntilFocused: true
   },
   screenshotURL: {
     displayName: 'Screenshot',
-    editType: 'text'
+    editType: 'text',
+    customElement: ImageDisplay,
+    hideUntilFocused: true
   },
   notes: {
     displayName: 'Notes',
-    editType: 'textarea'
+    editType: 'textarea',
+    hideUntilFocused: false
   },
   pullRequestURL: {
     displayName: 'PR',
-    editType: 'text'
+    editType: 'text',
+    hideUntilFocused: true
   },
   jiraURL: {
     displayName: 'Jira',
-    editType: 'text'
+    editType: 'text',
+    hideUntilFocused: true
   }
 }
 const EditableField = React.createClass({
@@ -55,6 +79,7 @@ const EditableField = React.createClass({
     id: React.PropTypes.string,
     value: React.PropTypes.string,
     isEdit: React.PropTypes.bool,
+    colorIndex: React.PropTypes.number,
     externallyUpdated: React.PropTypes.oneOfType([
       React.PropTypes.string,
       React.PropTypes.bool
@@ -124,23 +149,27 @@ const EditableField = React.createClass({
 
   renderStaticState: function () {
     var { fieldName, value } = this.props
-    var { displayName } = fieldNameConfig[fieldName]
+    var { displayName, customElement } = fieldNameConfig[fieldName]
+    var Elem = customElement || GenericFieldDisplay
     return (
       <div className='editable-field-static-container'>
         <CSSTransitionGroup transitionName='transition-fade' transitionEnterTimeout={300} transitionLeaveTimeout={300}>
-          <div className='editable-field-static' key={value}>{displayName}:{value}</div>
+          <Elem value={value} displayName={displayName}/>
         </CSSTransitionGroup>
       </div>
     )
   },
 
   renderSelect: function () {
-    var { fieldName, value, externallyUpdated } = this.props
-    var { displayName, options } = fieldNameConfig[fieldName]
+    var { fieldName, value, externallyUpdated, colorIndex } = this.props
+    var { displayName, options, hideUntilFocused } = fieldNameConfig[fieldName]
     return (
       <div className={classnames('editable-field',
         'editable-field--' + fieldName,
-        {'editable-field--externally-updated': externallyUpdated})}>
+        {'editable-field--externally-updated': externallyUpdated},
+        {'hide-until-focused': hideUntilFocused},
+        colorIndex ? 'color' + colorIndex : ''
+      )}>
         <div className='editable-field-static-container'>
           <CSSTransitionGroup transitionName='transition-fade' transitionEnterTimeout={300} transitionLeaveTimeout={300}>
             <div className='editable-field-static' key={value}>
@@ -153,14 +182,16 @@ const EditableField = React.createClass({
             </div>
           </CSSTransitionGroup>
         </div>
-        {externallyUpdated}
+        <div className='editable-field__updater'>
+          {externallyUpdated}
+        </div>
       </div>
     )
   },
 
   render: function () {
-    var { fieldName, isEdit, externallyUpdated } = this.props
-    var { editType } = fieldNameConfig[fieldName]
+    var { fieldName, isEdit, externallyUpdated, colorIndex } = this.props
+    var { editType, hideUntilFocused } = fieldNameConfig[fieldName]
     var eventHandlers = {}
     if (!isEdit) {
       eventHandlers.onClick = this.toggleEdit
@@ -177,23 +208,34 @@ const EditableField = React.createClass({
     return (
       <div className={classnames('editable-field',
         'editable-field--' + fieldName,
-        {'editable-field--externally-updated': externallyUpdated})}
+        {'editable-field--externally-updated': externallyUpdated},
+        {'hide-until-focused': hideUntilFocused},
+        colorIndex ? 'color' + colorIndex : '')}
         {...eventHandlers}>
         <EditToggle isEdit={isEdit} toggleEdit={this.toggleEdit}/>
         {content}
-        {externallyUpdated}
+        <div className='editable-field__updater'>
+          {externallyUpdated}
+        </div>
       </div>
     )
   }
 
 })
 
-const mapStateToProps = function ({bugs, localEdits, rtUpdates}, {fieldName, id}) {
+const mapStateToProps = function ({bugs, localEdits, rtUpdates, people}, {fieldName, id}) {
+  var externallyUpdated = rtUpdates[id + ':' + fieldName]
+  var colorIndex
+  if (externallyUpdated) {
+    colorIndex = people.indexOf(externallyUpdated)
+  }
   return {
     fieldName: fieldName,
     value: bugs[id][fieldName],
-    id: id,
-    externallyUpdated: rtUpdates[id + ':' + fieldName],
+    people,
+    id,
+    colorIndex,
+    externallyUpdated,
     isEdit: (localEdits.id === id && localEdits.field === fieldName)
   }
 }

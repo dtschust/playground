@@ -24,5 +24,28 @@
   }
 }
 
+@RTColors: red, pink, green, orange, purple;
+
+.addRTColorsToProperty(@counter; @property) when (@counter >= 0) {
+  .addRTColorsToProperty(@counter - 1; @property);    // next iteration
+  &.color@{counter} {
+    @{property}: extract(@RTColors, @counter + 1);
+  }
+}
+
+.drew-view {
+  margin: 0 auto;
+  text-align: center;
+}
+
+// .container {
+//   border: 1px solid black;
+//   .addRTColorsToProperty(4; border-color); // launch the loop
+// }
+
+
 @import "./sort.less";
 @import "./editable-field.less";
+@import "./people.less";
+@import "./filters.less";
+@import "./bug.less";

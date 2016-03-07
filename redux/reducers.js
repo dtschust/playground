@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 import { createReducer } from 'redux-act'
 import { receiveBugs, updateFilter, startRtUpdate,
         stopRtUpdate, addPerson, removePerson, initPeople,
+        focusOnBug, clearFocus,
         updateSort, identify, startEditing, endEditing } from './actions'
 import {status, priority} from '../bug-enums'
 
@@ -14,6 +15,15 @@ const rtUpdates = createReducer({
   }
 }, {
 })
+
+const focus = createReducer({
+  [focusOnBug]: (state, payload) => {
+    return payload
+  },
+  [clearFocus]: (state, payload) => {
+    return null
+  }
+}, null)
 
 const filters = createReducer({
   [updateFilter]: (state, payload) => {
@@ -105,8 +115,8 @@ const people = createReducer({
   },
   [initPeople]: (state, payload) => {
     var newPeople = [...state]
-    payload.forEach((person, i) => {
-      if (newPeople.indexOf(person < 0)) {
+    payload.forEach((person) => {
+      if (newPeople.indexOf(person) < 0) {
         newPeople.push(person)
       }
     })
@@ -140,7 +150,7 @@ const bugs = createReducer({
 })
 
 const combinedReducers = combineReducers({
-  bugs, people, rtUpdates, filters, sort, identity, localEdits
+  bugs, people, rtUpdates, filters, sort, identity, localEdits, focus
 })
 
 export const rootReducer = function (state = {}, action) {
