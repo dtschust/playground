@@ -213,7 +213,9 @@ const EditableField = React.createClass({
         colorIndex ? 'color' + colorIndex : '')}
         {...eventHandlers}>
         <EditToggle isEdit={isEdit} toggleEdit={this.toggleEdit}/>
-        {content}
+        <div className='editable-field__content'>
+          {content}
+        </div>
         <div className='editable-field__updater'>
           {externallyUpdated}
         </div>

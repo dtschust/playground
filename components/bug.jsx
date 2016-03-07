@@ -36,11 +36,9 @@ const Bug = React.createClass({
         <EditableField fieldName='notes' id={_id}/>
         <EditableField fieldName='pullRequestURL' id={_id}/>
         <EditableField fieldName='jiraURL' id={_id}/>
-        <div>
-          <div>Console Errors: {JSON.stringify(consoleErrors)}</div>
-          <div>Created at: {createdAt}</div>
-          <div>Updated at: {updatedAt}</div>
-        </div>
+        <div className='hide-until-focused'>Console Errors: {JSON.stringify(consoleErrors)}</div>
+        <div className='hide-until-focused'>Created at: {createdAt}</div>
+        <div className='hide-until-focused'>Updated at: {updatedAt}</div>
       </div>
     )
   }
