@@ -70,6 +70,7 @@ var fieldNameConfig = {
     hideUntilFocused: true
   }
 }
+
 const EditableField = React.createClass({
   displayName: 'Editable Field',
 
