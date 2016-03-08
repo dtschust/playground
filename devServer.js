@@ -7,6 +7,8 @@ import mongoose from 'mongoose'
 import Bug from './bug'
 import SocketIO from 'socket.io'
 import { url } from './mongo-config'
+import exphbs from 'express-handlebars'
+
 var router = express.Router()
 
 mongoose.connect(url)
@@ -15,12 +17,10 @@ mongoose.connection.on('error', function () {
 })
 
 var app = express()
-var exphbs = require('express-handlebars')
+
+// get handlebars working
 app.engine('.hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}))
 app.set('view engine', '.hbs')
-
-// let us get the ip of the request
-// app.enable('trust proxy')
 
 var compiler = webpack(config)
 
@@ -34,6 +34,7 @@ app.use(require('webpack-hot-middleware')(compiler))
 app.use(bodyParser.json())
 
 app.get('/:projectName/:id?', function (req, res) {
+  // prefetch bugs to speed up render time
   Bug.find({projectName: req.params.projectName.toLowerCase()}, function (err, bugs) {
     if (err) {
       res.status(500)
@@ -43,11 +44,11 @@ app.get('/:projectName/:id?', function (req, res) {
       projectName: req.params.projectName.toLowerCase(),
       bugId: req.params.id,
       bugs: JSON.stringify(bugs)
-      // ip: req.ip // not sure if this works yet
     })
   })
 })
 
+// API Routes
 router.route('/bugs/:projectName?').get(function (req, res) {
   Bug.find({projectName: req.params.projectName.toLowerCase()}, function (err, bugs) {
     if (err) {
@@ -65,7 +66,6 @@ router.route('/bugs/:projectName?').get(function (req, res) {
     }
     var projectName = newBug.projectName.toLowerCase()
     io.emit(projectName + ':bugCreated', [newBug])
-
     res.json([newBug])
   })
 })
@@ -75,8 +75,10 @@ router.route('/people/:projectName').get(function (req, res) {
 })
 
 router.route('/bugs/:id').put(function (req, res) {
+  // Person is the individual updating the bug
   var person = req.body.person
   delete req.body.person
+
   Bug.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, updatedBug) {
     if (err) {
       res.status(500)
@@ -106,7 +108,6 @@ var server = http.createServer(app).listen(app.get('port'), function () {
 var people = {}
 var io = SocketIO.listen(server)
 io.on('connection', function (socket) {
-  console.log('User connected!')
   var projectName = ''
   socket.on('newPerson', (data) => {
     projectName = data.projectName
@@ -123,7 +124,6 @@ io.on('connection', function (socket) {
       }
     })
     if (index >= 0) {
-      console.log('Removing ', projectPeople[index].person)
       io.emit(projectName + ':disconnect', {person: projectPeople[index].person})
       projectPeople.splice(index, 1)
     }

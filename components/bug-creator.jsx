@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { connect } from 'react-redux'
 import {status, priority} from '../bug-enums'
 import { createBug } from '../redux/actions'
 
@@ -7,21 +7,22 @@ const BugCreator = React.createClass({
   displayName: 'Bug Creator',
 
   propTypes: {
-    dispatch: React.PropTypes.func.isRequired
+    dispatch: React.PropTypes.func.isRequired,
+    identity: React.PropTypes.string,
+    projectName: React.PropTypes.string
   },
   onSubmit: function (e) {
     e.preventDefault()
     var inputs = Object.keys(this.refs)
     var form = this.form
 
-    var projectName = window.projectName.toLowerCase()
-    var reporter = 'Drew' // Will prompt for this and grab from localStorage
+    var reporter = this.props.identity
     var formData = inputs.reduce((prev, curr) => {
       prev[curr] = this.refs[curr].value
       return prev
     }, {})
     formData.reporter = reporter
-    formData.projectName = projectName
+    formData.projectName = this.props.projectName
     this.props.dispatch(createBug(formData)).then(function () {
       form.reset()
     })
@@ -56,4 +57,4 @@ const BugCreator = React.createClass({
   }
 })
 
-export default BugCreator
+export default connect(({identity, projectName}) => ({identity, projectName}))(BugCreator)

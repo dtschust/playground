@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import { createReducer } from 'redux-act'
 import { receiveBugs, updateFilter, startRtUpdate,
         stopRtUpdate, addPerson, removePerson, initPeople,
-        focusOnBug, clearFocus,
+        focusOnBug, clearFocus, loadProjectName,
         updateSort, identify, startEditing, endEditing } from './actions'
 import {status, priority} from '../bug-enums'
 
@@ -25,23 +25,20 @@ const focus = createReducer({
   }
 }, null)
 
-const filters = createReducer({
-  [updateFilter]: (state, payload) => {
-    return {...state, ...payload}
-  }
-}, {
+const filterDefaults = {
   _id: undefined,
   priority: undefined,
   owner: undefined,
   description: undefined,
   status: undefined
-})
-
-const sort = createReducer({
-  [updateSort]: (state, payload) => {
+}
+const filters = createReducer({
+  [updateFilter]: (state, payload) => {
     return {...state, ...payload}
   }
-}, {
+}, filterDefaults)
+
+const sortDefaults = {
   sortBy: 'createdAt',
   direction: 'asc',
   sortOptions: {
@@ -72,7 +69,13 @@ const sort = createReducer({
       defaultDirection: 'asc'
     }
   }
-})
+}
+
+const sort = createReducer({
+  [updateSort]: (state, payload) => {
+    return {...state, ...payload}
+  }
+}, sortDefaults)
 
 const identity = createReducer({
   [identify]: (state, payload) => {
@@ -132,6 +135,11 @@ const people = createReducer({
 },
 [undefined]
 )
+const projectName = createReducer({
+  [loadProjectName]: (state, payload) => {
+    return payload
+  }
+}, null)
 
 const bugs = createReducer({
   [receiveBugs]: (state, payload) => {
@@ -140,17 +148,12 @@ const bugs = createReducer({
       return prev
     }, {})
     return {...state, ...newBugs}
-  }/*,
-  [localUpdateBug]: (state, payload) => {
-    var bug = {...state[payload['_id']], ...payload.updates}
-    // bug[payload.key] = payload.value
-    return {...state, [bug['_id']]: bug}
-  }*/
+  }
 }, {
 })
 
 const combinedReducers = combineReducers({
-  bugs, people, rtUpdates, filters, sort, identity, localEdits, focus
+  bugs, people, rtUpdates, filters, sort, identity, localEdits, focus, projectName
 })
 
 export const rootReducer = function (state = {}, action) {

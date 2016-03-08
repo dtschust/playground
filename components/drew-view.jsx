@@ -14,7 +14,8 @@ const DrewView = React.createClass({
 
   propTypes: {
     dispatch: React.PropTypes.func.isRequired,
-    bugIds: React.PropTypes.array.isRequired
+    bugIds: React.PropTypes.array.isRequired,
+    projectName: React.PropTypes.string
   },
 
   unFocus: function () {
@@ -22,12 +23,12 @@ const DrewView = React.createClass({
   },
 
   render: function () {
-    var {bugIds} = this.props
+    var {bugIds, projectName} = this.props
 
     return (
       <div className='drew-view' onClick={this.unFocus}>
         <People/>
-        <h1>Project: {window.projectName}</h1>
+        <h1>Project: {projectName}</h1>
         <Filters/>
         <Sort/>
         <div className='bugs-container'>
@@ -37,14 +38,14 @@ const DrewView = React.createClass({
             })
           }
         </div>
-        <BugCreator dispatch={this.props.dispatch}/>
+        <BugCreator/>
       </div>
 
     )
   }
 })
 
-const mapStateToProps = function ({bugs, filters, sort}) {
+const mapStateToProps = function ({bugs, filters, sort, projectName}) {
   // filter the bugs
   var filteredBugs = _.toArray(bugs)
   var filterNames = Object.keys(filters)
@@ -73,6 +74,7 @@ const mapStateToProps = function ({bugs, filters, sort}) {
   }
   return {
     bugIds: _.map(sortedBugs, '_id'),
+    projectName,
     filters
   }
 }

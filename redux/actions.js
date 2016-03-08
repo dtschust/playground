@@ -3,31 +3,18 @@ import { createAction } from 'redux-act'
 import 'whatwg-fetch'
 
 export const receiveBugs = createAction('receive any amount of bugs')
-
-// export const localUpdateBug = createAction('Update the state of a bug')
-
 export const updateFilter = createAction('Update an individual filter')
-
 export const updateSort = createAction('Change the sort key')
-
+export const loadProjectName = createAction('Load the project name')
 export const identify = createAction('Store the user\'s name')
-
 export const startEditing = createAction('Begin to edit a field')
-
 export const endEditing = createAction('Stop editing a field')
-
 export const startRtUpdate = createAction('Start animating a rt update')
-
 export const stopRtUpdate = createAction('Stop animating a rt update')
-
 export const addPerson = createAction('Add a new person on connect')
-
 export const removePerson = createAction('Remove a person on disconnect')
-
 export const initPeople = createAction('Add all people currently on the same project')
-
 export const focusOnBug = createAction('Focus on one bug')
-
 export const clearFocus = createAction('Clear focus on a bug')
 
 export const rtUpdate = function (payload) {
@@ -40,8 +27,9 @@ export const rtUpdate = function (payload) {
 }
 
 export const fetchPeople = function () {
-  return dispatch => {
-    fetch('/api/people/' + window.projectName.toLowerCase())
+  return (dispatch, getState) => {
+    var { projectName } = getState()
+    fetch('/api/people/' + projectName)
       .then(function (response) {
         return response.json()
       }).then(function (json) {
@@ -53,8 +41,9 @@ export const fetchPeople = function () {
 }
 
 export const fetchBugs = function () {
-  return dispatch => {
-    fetch('/api/bugs/' + window.projectName.toLowerCase())
+  return (dispatch, getState) => {
+    var { projectName } = getState()
+    fetch('/api/bugs/' + projectName)
       .then(function (response) {
         return response.json()
       }).then(function (json) {
@@ -86,12 +75,6 @@ export const updateBug = function (bug) {
   }
 }
 
-// export const deleteBug = function (bugId) {
-//   return dispatch => {
-//
-//   }
-// }
-//
 export const createBug = function (bug) {
   return dispatch => {
     return fetch('/api/bugs', {
