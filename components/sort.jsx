@@ -4,13 +4,13 @@ import { updateSort } from '../redux/actions.js'
 import classnames from 'classnames'
 
 const Sort = ({sort, dispatch}) => {
-  var sortOptions = Object.keys(sort.sortOptions)
+  var sortOptionKeys = Object.keys(sort.sortOptions)
   var {sortBy, direction} = sort
   return (
     <div className='sort'>
       <span>Sort:</span>
       {
-        sortOptions.map((optionKey) => {
+        sortOptionKeys.map((optionKey) => {
           var option = sort.sortOptions[optionKey]
           var directionClass = ''
           if (optionKey === sortBy) {
