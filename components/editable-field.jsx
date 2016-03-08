@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import {startEditing, endEditing, updateBug} from '../redux/actions'
 import EditToggle from './edit-toggle'
 import classnames from 'classnames'
-import CSSTransitionGroup from 'react-addons-css-transition-group'
+// import CSSTransitionGroup from 'react-addons-css-transition-group'
 import { status as statusOptions, priority as priorityOptions } from '../bug-enums'
 
 const GenericFieldDisplay = ({value, displayName}) => {
@@ -154,9 +154,7 @@ const EditableField = React.createClass({
     var Elem = customElement || GenericFieldDisplay
     return (
       <div className='editable-field-static-container'>
-        <CSSTransitionGroup transitionName='transition-fade' transitionEnterTimeout={300} transitionLeaveTimeout={300}>
-          <Elem value={value} displayName={displayName}/>
-        </CSSTransitionGroup>
+        <Elem value={value} displayName={displayName}/>
       </div>
     )
   },
@@ -172,16 +170,14 @@ const EditableField = React.createClass({
         colorIndex ? 'color' + colorIndex : ''
       )}>
         <div className='editable-field-static-container'>
-          <CSSTransitionGroup transitionName='transition-fade' transitionEnterTimeout={300} transitionLeaveTimeout={300}>
-            <div className='editable-field-static' key={value}>
-              {displayName}:
-              <select key={value} defaultValue={value} onChange={this.updateBugFromSelect}>
-                {options.map((option) => {
-                  return (<option key={option} value={option}>{option}</option>)
-                })}
-              </select>
-            </div>
-          </CSSTransitionGroup>
+          <div className='editable-field-static' key={value}>
+            {displayName}:
+            <select key={value} defaultValue={value} onChange={this.updateBugFromSelect}>
+              {options.map((option) => {
+                return (<option key={option} value={option}>{option}</option>)
+              })}
+            </select>
+          </div>
         </div>
         <div className='editable-field__updater'>
           {externallyUpdated}
