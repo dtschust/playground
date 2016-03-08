@@ -6,27 +6,21 @@ import People from './people'
 import Filters from './filters'
 import Sort from './sort'
 import BugCreator from './bug-creator'
-import {clearFocus} from '../redux/actions'
 import _ from 'lodash'
 
 const DrewView = React.createClass({
   displayName: 'Drew View',
 
   propTypes: {
-    dispatch: React.PropTypes.func.isRequired,
     bugIds: React.PropTypes.array.isRequired,
     projectName: React.PropTypes.string
-  },
-
-  unFocus: function () {
-    this.props.dispatch(clearFocus())
   },
 
   render: function () {
     var {bugIds, projectName} = this.props
 
     return (
-      <div className='drew-view' onClick={this.unFocus}>
+      <div className='drew-view'>
         <People/>
         <h1>Project: {projectName}</h1>
         <Filters/>

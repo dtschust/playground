@@ -2,22 +2,22 @@
   position: relative;
   display: inline-block;
   border: 1px solid black;
-  .addRTColorsToProperty(4; border-color);
-  .addRTColorsToProperty(4; background-color);
+  .addRTFillColorsToProperty(4; border-color);
+  .addRTFillColorsToProperty(4; background-color);
+  .addRTStrokeColorsToProperty(4; color);
   padding: 10px;
   margin: 5px;
   background-color: grey;
   transition: background-color 200ms linear;
+  vertical-align: top;
   &__edit-toggle {
     color: blue;
   }
   &__updater {
-    position: absolute;
-    right: 20px;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    height: 18px;
+    margin-top: 10px;
+    font-size: 18px;
+    line-height: 18px;
+    min-height: 18px;
   }
   &--externally-updated {
 
@@ -36,6 +36,9 @@
     //     transform: translateY(-100px);
     //   }
     // }
+  }
+  &__label {
+    font-style: italic;
   }
 }
 

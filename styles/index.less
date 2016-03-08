@@ -24,12 +24,20 @@
   }
 }
 
-@RTColors: red, pink, green, orange, purple;
+@RTFillColors: red, pink, green, orange, purple;
+@RTStrokeColors: white, black, white, white, white;
 
-.addRTColorsToProperty(@counter; @property) when (@counter >= 0) {
-  .addRTColorsToProperty(@counter - 1; @property);    // next iteration
+.addRTFillColorsToProperty(@counter; @property) when (@counter >= 0) {
+  .addRTFillColorsToProperty(@counter - 1; @property);    // next iteration
   &.color@{counter} {
-    @{property}: extract(@RTColors, @counter + 1);
+    @{property}: extract(@RTFillColors, @counter + 1);
+  }
+}
+
+.addRTStrokeColorsToProperty(@counter; @property) when (@counter >= 0) {
+  .addRTStrokeColorsToProperty(@counter - 1; @property);    // next iteration
+  &.color@{counter} {
+    @{property}: extract(@RTStrokeColors, @counter + 1);
   }
 }
 

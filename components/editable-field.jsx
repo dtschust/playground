@@ -8,7 +8,10 @@ import { status as statusOptions, priority as priorityOptions } from '../bug-enu
 
 const GenericFieldDisplay = ({value, displayName}) => {
   return (
-    <div className='editable-field-static' key={value}>{displayName}:{value}</div>
+    <div className='editable-field-static' key={value}>
+      <div className='editable-field__label'>{displayName}</div>
+      <div className='editable-field__value'>{value}</div>
+    </div>
   )
 }
 
@@ -126,13 +129,16 @@ const EditableField = React.createClass({
 
   renderEditState: function () {
     var { fieldName, value } = this.props
-    var { editType } = fieldNameConfig[fieldName]
+    var { editType, displayName } = fieldNameConfig[fieldName]
     if (editType === 'text') {
       return (
         <div>
           <form onSubmit={this.updateBugFromInput}>
+            <div className='editable-field__label'>{displayName}</div>
             <input ref='formInput' type='text' defaultValue={value} onBlur={this.updateBugFromInput}/>
-            <button type='submit'>Save</button>
+            <div>
+              <button type='submit'>Save</button>
+            </div>
           </form>
         </div>
       )
@@ -140,8 +146,11 @@ const EditableField = React.createClass({
       return (
         <div>
           <form onSubmit={this.updateBugFromInput}>
+            <div className='editable-field__label'>{displayName}</div>
             <textarea ref='formInput' defaultValue={value} onBlur={this.updateBugFromInput}/>
-            <button type='submit'>Save</button>
+            <div>
+              <button type='submit'>Save</button>
+            </div>
           </form>
         </div>
       )
@@ -171,7 +180,7 @@ const EditableField = React.createClass({
       )}>
         <div className='editable-field-static-container'>
           <div className='editable-field-static' key={value}>
-            {displayName}:
+            <div className='editable-field__label'>{displayName}</div>
             <select key={value} defaultValue={value} onChange={this.updateBugFromSelect}>
               {options.map((option) => {
                 return (<option key={option} value={option}>{option}</option>)
@@ -179,7 +188,7 @@ const EditableField = React.createClass({
             </select>
           </div>
         </div>
-        <div className='editable-field__updater'>
+        <div className={classnames('editable-field__updater', colorIndex ? 'color' + colorIndex : '')}>
           {externallyUpdated}
         </div>
       </div>
@@ -213,7 +222,7 @@ const EditableField = React.createClass({
         <div className='editable-field__content'>
           {content}
         </div>
-        <div className='editable-field__updater'>
+        <div className={classnames('editable-field__updater', colorIndex ? 'color' + colorIndex : '')}>
           {externallyUpdated}
         </div>
       </div>

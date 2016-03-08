@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { focusOnBug } from '../redux/actions'
+import { focusOnBug, clearFocus } from '../redux/actions'
 import EditableField from './editable-field'
 import classnames from 'classnames'
 
@@ -18,7 +18,11 @@ const Bug = React.createClass({
 
   focusOnBug: function (e) {
     e.stopPropagation()
-    this.props.dispatch(focusOnBug(this.props.bug._id))
+    if (this.props.isFocused) {
+      this.props.dispatch(clearFocus())
+    } else {
+      this.props.dispatch(focusOnBug(this.props.bug._id))
+    }
   },
 
   render: function () {
@@ -26,7 +30,7 @@ const Bug = React.createClass({
     var { isFocused } = this.props
     return (
       <div style={{margin: '20px', padding: '10px', backgroundColor: 'grey', textAlign: 'center'}}
-        className={classnames('bug', {focused: isFocused})} onClick={this.focusOnBug}>
+        className={classnames('bug', {focused: isFocused})}>
         <EditableField fieldName='status' id={_id}/>
         <EditableField fieldName='description' id={_id}/>
         <EditableField fieldName='priority' id={_id}/>
@@ -39,6 +43,9 @@ const Bug = React.createClass({
         <div className='hide-until-focused'>Console Errors: {JSON.stringify(consoleErrors)}</div>
         <div className='hide-until-focused'>Created at: {createdAt}</div>
         <div className='hide-until-focused'>Updated at: {updatedAt}</div>
+        <div>
+          <button className='bug__expand' onClick={this.focusOnBug}>{isFocused ? '⬆️Show Less⬆️' : '⬇️Show More⬇️'}</button>
+        </div>
       </div>
     )
   }
