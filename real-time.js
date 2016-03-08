@@ -3,11 +3,10 @@ import { receiveBugs, rtUpdate, addPerson, removePerson } from './redux/actions.
 
 export default function initRealTime (store) {
   var socket = io()
-  var {identity: person, projectName} = store.getState().identity
+  var {identity: person, projectName} = store.getState()
 
   // announce new connection
   socket.emit('newPerson', {projectName, person})
-
   // Listen for new connections
   socket.on(projectName + ':newPerson', ({person: newPerson}) => {
     if (newPerson !== person) {
