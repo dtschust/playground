@@ -1,8 +1,19 @@
 .bug {
+  margin: 20px;
+  padding: 10px;
+  background-color: grey;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   .hide-until-focused {
     display: none;
   }
   &.focused .hide-until-focused {
     display: inline-block;
+  }
+  &__expand,
+  &__field {
+    flex: 0 0 100%;
   }
 }

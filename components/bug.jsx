@@ -29,7 +29,7 @@ const Bug = React.createClass({
     var { _id, consoleErrors, createdAt, updatedAt } = this.props.bug
     var { isFocused } = this.props
     return (
-      <div style={{margin: '20px', padding: '10px', backgroundColor: 'grey', textAlign: 'center'}}
+      <div
         className={classnames('bug', {focused: isFocused})}>
         <EditableField fieldName='status' id={_id}/>
         <EditableField fieldName='description' id={_id}/>
@@ -40,11 +40,11 @@ const Bug = React.createClass({
         <EditableField fieldName='notes' id={_id}/>
         <EditableField fieldName='pullRequestURL' id={_id}/>
         <EditableField fieldName='jiraURL' id={_id}/>
-        <div className='hide-until-focused'>Console Errors: {JSON.stringify(consoleErrors)}</div>
-        <div className='hide-until-focused'>Created at: {createdAt}</div>
-        <div className='hide-until-focused'>Updated at: {updatedAt}</div>
-        <div>
-          <button className='bug__expand' onClick={this.focusOnBug}>{isFocused ? '⬆️Show Less⬆️' : '⬇️Show More⬇️'}</button>
+        <div className='bug__field hide-until-focused'>Console Errors: {JSON.stringify(consoleErrors)}</div>
+        <div className='bug__field hide-until-focused'>Created at: {createdAt}</div>
+        <div className='bug__field hide-until-focused'>Updated at: {updatedAt}</div>
+        <div className='bug__expand'>
+          <button onClick={this.focusOnBug}>{isFocused ? '⬆️Show Less⬆️' : '⬇️Show More⬇️'}</button>
         </div>
       </div>
     )
