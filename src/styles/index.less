@@ -1,0 +1,43 @@
+@import (less) "npm://normalize.css/normalize.css";
+// responsive breakpoints
+@screen-small-max : 767px;
+@screen-medium : 768px;
+@screen-medium-max : 1023px;
+@screen-large : 1024px;
+@screen-large-max : 1199px;
+@screen-wide : 1200px;
+
+* {
+  box-sizing: border-box;
+}
+
+.fake-class {
+  @media (min-width: @screen-medium) {
+    // non-mobile
+  }
+}
+.app-container {
+  max-width: 1000px;
+  margin: auto;
+}
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: black;
+  opacity: 0.5;
+  z-index: 1200;
+}
+.loading-element {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 140px;
+  height: 140px;
+  z-index: 1;
+}
