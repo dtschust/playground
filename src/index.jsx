@@ -2,14 +2,14 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import { Router, Route, IndexRoute, hashHistory } from 'react-router'
+import { Router, Route, IndexRoute } from 'react-router'
 import { Provider } from 'react-redux'
 import { syncHistoryWithStore } from 'react-router-redux'
+import history from './history'
 import Container from './Container'
 import Home from './routes/Home'
-import Login from './routes/Login'
+import Foo from './routes/Foo'
 import store from './redux/configureStore'
-import isEmpty from 'lodash/isEmpty'
 import './styles/index.less'
 
 const NoMatch = () => {
@@ -23,29 +23,23 @@ const NoMatch = () => {
 injectTapEventPlugin()
 
 // Create an enhanced history that syncs navigation events with the store
-const history = syncHistoryWithStore(hashHistory, store)
+const syncedHistory = syncHistoryWithStore(history, store)
 
-// onEnter hooks for login and home page to redirect if necessary
+// example onEnter hook
 const checkAuth = function (nextState, replace) {
-  const { user } = store.getState()
-  if (isEmpty(user)) {
-    replace('/')
-  }
-}
-const checkSkipAuth = function (nextState, replace) {
-  const { user } = store.getState()
-  if (!isEmpty(user)) {
-    replace('/home')
-  }
+  // const { user } = store.getState()
+  // if (false) {
+  //   replace('/')
+  // }
 }
 
 var Index = () => {
   return (
     <Provider store={store}>
       <MuiThemeProvider>
-        <Router history={history}>
+        <Router history={syncedHistory}>
           <Route path='/' component={Container}>
-            <IndexRoute component={Login} onEnter={checkSkipAuth} />
+            <IndexRoute component={Foo} />
             <Route path='home' component={Home} onEnter={checkAuth} />
             <Route path='*' component={NoMatch} />
           </Route>
@@ -55,4 +49,6 @@ var Index = () => {
   )
 }
 
-ReactDOM.render(<Index />, document.getElementById('root'))
+document.addEventListener('DOMContentLoaded', function domLoaded (event) {
+  ReactDOM.render(<Index />, document.getElementById('root'))
+})

@@ -1,11 +1,11 @@
 import { createStore, compose, applyMiddleware } from 'redux'
 import { routerMiddleware } from 'react-router-redux'
-import { hashHistory } from 'react-router'
-import {storeEnhancer} from 'redux-bug-reporter'
-
+import { storeEnhancer } from 'redux-bug-reporter'
 import thunk from 'redux-thunk'
+
+import history from '../history'
 import rootReducer from './rootReducer'
-const historyMiddleware = routerMiddleware(hashHistory)
+const historyMiddleware = routerMiddleware(history)
 
 let store = createStore(
   rootReducer,

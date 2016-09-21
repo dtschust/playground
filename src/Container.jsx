@@ -69,19 +69,19 @@ const Container = ({ children, loading }) => {
   return (
     <div className='app-container'>
       <AppBar
-        title='Example Résumé App' iconElementLeft={(<span />)}
+        title='Fake App' iconElementLeft={(<span />)}
       />
       {children}
-      {loading && <Loader />}
+      {false && <Loader />}
       <ReduxBugReporter submit={submitFn} projectName='login-page' />
     </div>
 
   )
 }
 
-const mapStateToProps = ({user}) => {
+const mapStateToProps = (store) => {
   return {
-    loading: user.loading
+
   }
 }
 export default connect(mapStateToProps)(Container)

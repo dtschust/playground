@@ -1,11 +1,13 @@
 var webpack = require('webpack')
 var path = require('path')
 var autoprefixer = require('autoprefixer')
+var LessPluginNpmImport = require('less-plugin-npm-import')
 
 var config = {
   devtool: 'eval',
   entry: [
     'babel-polyfill',
+    'webpack-hot-middleware/client',
     path.join(__dirname, '/src/index.jsx')
   ],
   output: {
@@ -14,6 +16,18 @@ var config = {
     publicPath: '/'
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+        // ENV_URL: JSON.stringify(process.env.ENV_URL)
+      }
+    }),
+    // If any env variable still remain, ensure they evaluate to `undefined`.
+    new webpack.DefinePlugin({
+      'process.env': {
+      }
+    }),
     new webpack.NoErrorsPlugin()
   ],
   module: {
@@ -23,8 +37,6 @@ var config = {
         loader: 'babel',
         exclude: /node_modules/,
         query: {
-          'presets': ['react', 'es2015'],
-          'plugins': ['transform-object-rest-spread'],
           'env': {
             'development': {
               'plugins': [['react-transform', {
@@ -45,11 +57,18 @@ var config = {
       {
         test: /\.css$/,
         loader: 'style!css!postcss'
+      },
+      {
+        test: /\.json$/,
+        loader: 'json'
       }
     ]
   },
   postcss: function () {
     return [autoprefixer]
+  },
+  lessLoader: {
+    lessPlugins: [new LessPluginNpmImport()]
   },
   resolve: {
     extensions: ['', '.jsx', '.js', '.json', '.less']
@@ -58,6 +77,15 @@ var config = {
     port: 3000,
     contentBase: path.join(__dirname, '/public')
   }
+}
+
+if (process.env.NODE_ENV === 'production') {
+  // remove live reload stuff
+  config.entry = [
+    'babel-polyfill',
+    path.join(__dirname, '/src/index.jsx')
+  ]
+  config.plugins = config.plugins.slice(1)
 }
 
 module.exports = config
