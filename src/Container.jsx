@@ -68,12 +68,7 @@ const Loader = () => {
 const Container = ({ children, loading }) => {
   return (
     <div className='app-container'>
-      <AppBar
-        title='Fake App' iconElementLeft={(<span />)}
-      />
       {children}
-      {false && <Loader />}
-      <ReduxBugReporter submit={submitFn} projectName='login-page' />
     </div>
 
   )

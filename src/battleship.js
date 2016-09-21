@@ -28,6 +28,18 @@ class Battleship {
     this.attacks[playerId] = attack
   }
 
+  getAttackBoard (playerId) {
+    return this.attacks[playerId]
+  }
+  getBoard (playerId) {
+    return this.boards[playerId]
+  }
+  getBoards () {
+    return this.boards
+  }
+  getAttacks () {
+    return this.attacks
+  }
   setupBoards () {
     this.setupBoard(PLAYER_ONE)
     this.setupBoard(PLAYER_TWO)
@@ -133,9 +145,7 @@ class Battleship {
       }).join(''))
     })
   }
-  getCurrentTurn () {
 
-  }
   getEnemyBoard (playerId) {
     return this.boards[playerId === PLAYER_ONE ? PLAYER_TWO : PLAYER_ONE]
   }
@@ -205,14 +215,14 @@ class Battleship {
   }
 }
 
-let battleship = new Battleship()
-// let result = battleship.attack(PLAYER_ONE, 0, 0)
-for (let i = 0; i < 10; i++) {
-  for (let j = 0; j < 10; j++) {
-    let result = battleship.attack(PLAYER_ONE, i, j)
-    console.log(result)
-  }
-}
-
-battleship.printAll()
+// let battleship = new Battleship()
+// // let result = battleship.attack(PLAYER_ONE, 0, 0)
+// for (let i = 0; i < 10; i++) {
+//   for (let j = 0; j < 10; j++) {
+//     let result = battleship.attack(PLAYER_ONE, i, j)
+//     console.log(result)
+//   }
+// }
+//
+// battleship.printAll()
 export default Battleship

@@ -39,7 +39,7 @@ var Index = () => {
       <MuiThemeProvider>
         <Router history={syncedHistory}>
           <Route path='/' component={Container}>
-            <IndexRoute component={Foo} />
+            <IndexRoute component={Home} />
             <Route path='home' component={Home} onEnter={checkAuth} />
             <Route path='*' component={NoMatch} />
           </Route>

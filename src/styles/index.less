@@ -16,10 +16,10 @@
     // non-mobile
   }
 }
-.app-container {
-  max-width: 1000px;
-  margin: auto;
-}
+// .app-container {
+//   max-width: 1000px;
+//   margin: auto;
+// }
 .loading-overlay {
   position: absolute;
   top: 0;
@@ -40,4 +40,37 @@
   width: 140px;
   height: 140px;
   z-index: 1;
+}
+.game-container {
+  background: black;
+  text-align: center;
+}
+
+.board-container {
+  display: inline-block;
+  width: 50%;
+}
+.board {
+  margin: 30px;
+  // display: inline-block;
+  &__row {
+    // background: blue;
+    font-size: 0;
+  }
+  &__cell {
+    display: inline-block;
+    border: 1px solid black;
+    width: 50px;
+    height: 50px;
+    background: blue;
+    &--ship {
+      background: gray;
+      &.board__cell--attacked {
+        background: red;
+      }
+    }
+    &--attacked {
+      background: darkblue;
+    }
+  }
 }
