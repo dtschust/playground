@@ -7,9 +7,9 @@ import Battleship from '../battleship'
 const PLAYER_ONE = 'one'
 const PLAYER_TWO = 'two'
 
-const Board = ({board, attacks, onClick, playerId}) => {
+const Board = ({board, attacks, onClick, playerId, active}) => {
   return (
-    <div className='board-container'>
+    <div className={classNames('board-container', {'board-container--active': active})}>
       <div className='board'>
         {board.map((row, i) => {
           return (
@@ -25,6 +25,9 @@ const Board = ({board, attacks, onClick, playerId}) => {
                     )
                     }
                     onClick={(e) => {
+                      if (!active) {
+                        return
+                      }
                       onClick(playerId, i, j)
                     }} />
                 )
@@ -45,6 +48,7 @@ const Home = React.createClass({
   },
   getInitialState: function () {
     return {
+      currentPlayer: PLAYER_ONE,
       boards: [],
       attacks: []
     }
@@ -55,21 +59,30 @@ const Home = React.createClass({
       attacks: this.battleship.getAttacks()
     })
   },
+  togglePlayer: function () {
+    this.setState({
+      currentPlayer: (this.state.currentPlayer === PLAYER_ONE ? PLAYER_TWO : PLAYER_ONE)
+    })
+  },
   onClick: function (playerId, x, y) {
-    const result = this.battleship.attack(playerId, x, y)
-    console.log(result)
-    // TODO: Handle response!
-    this.updateGame()
+    if (playerId === this.state.currentPlayer) {
+      const result = this.battleship.attack(playerId, x, y)
+      console.log(result)
+      // TODO: Handle response!
+      this.updateGame()
+      this.togglePlayer()
+    }
   },
   render: function () {
     const { [PLAYER_ONE]: p1board, [PLAYER_TWO]: p2board } = this.state.boards
     const { [PLAYER_ONE]: p1attacks, [PLAYER_TWO]: p2attacks } = this.state.attacks
+    const isp1BoardActive = this.state.currentPlayer === PLAYER_TWO
     return (
       <div>
         <h1>Battleship</h1>
         <div className='game-container'>
-          <Board board={p1board} attacks={p2attacks} playerId={PLAYER_TWO} onClick={this.onClick} />
-          <Board board={p2board} attacks={p1attacks} playerId={PLAYER_ONE} onClick={this.onClick} />
+          <Board board={p1board} active={isp1BoardActive} attacks={p2attacks} playerId={PLAYER_TWO} onClick={this.onClick} />
+          <Board board={p2board} active={!isp1BoardActive} attacks={p1attacks} playerId={PLAYER_ONE} onClick={this.onClick} />
         </div>
       </div>
     )
